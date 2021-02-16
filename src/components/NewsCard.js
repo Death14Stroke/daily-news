@@ -5,7 +5,12 @@ const NewsCard = ({ title, date, imageUri }) => {
 	return (
 		<ImageBackground source={{ uri: imageUri }} style={styles.image}>
 			<View style={styles.textContainer}>
-				<Text style={styles.title}>{title}</Text>
+				<Text
+					style={styles.title}
+					numberOfLines={3}
+					ellipsizeMode='tail'>
+					{title}
+				</Text>
 				<Text style={styles.date}>{date}</Text>
 			</View>
 		</ImageBackground>
@@ -19,7 +24,8 @@ const styles = StyleSheet.create({
 		resizeMode: 'cover',
 		borderRadius: 5,
 		overflow: 'hidden',
-		elevation: 10
+		elevation: 10,
+		marginRight: 20
 	},
 	textContainer: {
 		bottom: 0,

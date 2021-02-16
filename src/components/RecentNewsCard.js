@@ -11,7 +11,12 @@ const RecentNewsCard = ({ title, category, imageUri }) => {
 				</View>
 				<View style={styles.textContainer}>
 					<Text style={styles.category}>{category}</Text>
-					<Text style={styles.title}>{title}</Text>
+					<Text
+						style={styles.title}
+						numberOfLines={3}
+						ellipsizeMode='tail'>
+						{title}
+					</Text>
 				</View>
 			</View>
 		</Card>
@@ -23,6 +28,9 @@ const styles = StyleSheet.create({
 		padding: 0,
 		borderWidth: 0,
 		height: 175,
+		margin: 0,
+		marginHorizontal: 20,
+		marginBottom: 20,
 		borderRadius: 5,
 		elevation: 2
 	},

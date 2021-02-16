@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, FlatList, ScrollView, StyleSheet } from 'react-native';
-import { Header, Text } from 'react-native-elements';
-import { SafeAreaView } from 'react-navigation';
+import { Text } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useHighlights, useRecents } from '../hooks/NewsApi';
 import NewsCard from '../components/NewsCard';
 import RecentNewsCard from '../components/RecentNewsCard';
@@ -30,24 +30,17 @@ const HomeScreen = () => {
 	};
 
 	useEffect(() => {
-		fetchHighlights();
-		fetchRecents();
+		//fetchHighlights();
+		//fetchRecents();
 	}, []);
 
 	return (
-		<SafeAreaView forceInset={{ top: 'always' }}>
-			<Header
-				placement='left'
-				statusBarProps={{
-					backgroundColor: 'white',
-					barStyle: 'dark-content'
-				}}
-				containerStyle={{ backgroundColor: '#fff' }}
-				centerComponent={{
-					text: 'Daily News',
-					style: { fontSize: 22, fontWeight: 'bold' }
-				}}
-			/>
+		<SafeAreaView
+			style={{
+				flex: 1,
+				justifyContent: 'space-between',
+				alignItems: 'center'
+			}}>
 			<ScrollView>
 				<View>
 					<FlatList

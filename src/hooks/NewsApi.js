@@ -38,3 +38,13 @@ export const useRecents = ({ country }) => {
 
 	return [recents, fetchRecents];
 };
+
+export const useCategories = async () => {
+	try {
+		let response = await news.get('/categoeries');
+		return response.categories;
+	} catch (err) {
+		console.log(err);
+		return [];
+	}
+};

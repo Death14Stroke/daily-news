@@ -42,13 +42,34 @@ const createTabs = () => {
 				component={HomeScreen}
 				options={{ title: 'All news' }}
 			/>
-			<Tab.Screen name='Business' component={CategoryNewsScreen} />
-			<Tab.Screen name='Entertainment' component={CategoryNewsScreen} />
-			<Tab.Screen name='General' component={CategoryNewsScreen} />
-			<Tab.Screen name='Health' component={CategoryNewsScreen} />
-			<Tab.Screen name='Science' component={CategoryNewsScreen} />
-			<Tab.Screen name='Sports' component={CategoryNewsScreen} />
-			<Tab.Screen name='Technology' component={CategoryNewsScreen} />
+			<Tab.Screen
+				name='Business'
+				children={() => <CategoryNewsScreen category='business' />}
+			/>
+			<Tab.Screen
+				name='Entertainment'
+				children={() => <CategoryNewsScreen category='entertainment' />}
+			/>
+			<Tab.Screen
+				name='General'
+				children={() => <CategoryNewsScreen category='general' />}
+			/>
+			<Tab.Screen
+				name='Health'
+				children={() => <CategoryNewsScreen category='health' />}
+			/>
+			<Tab.Screen
+				name='Science'
+				children={() => <CategoryNewsScreen category='science' />}
+			/>
+			<Tab.Screen
+				name='Sports'
+				children={() => <CategoryNewsScreen category='sports' />}
+			/>
+			<Tab.Screen
+				name='Technology'
+				children={() => <CategoryNewsScreen category='technology' />}
+			/>
 		</Tab.Navigator>
 	);
 };

@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Text, ImageBackground, StyleSheet } from 'react-native';
 
-const NewsCard = ({ title, date, imageUri }) => {
+const NewsCard = ({ title, date, imageUri, cardStyle }) => {
 	return (
-		<ImageBackground source={{ uri: imageUri }} style={styles.image}>
+		<ImageBackground
+			source={{ uri: imageUri }}
+			style={[styles.image, cardStyle]}>
 			<View style={styles.textContainer}>
 				<Text
 					style={styles.title}

@@ -1,25 +1,20 @@
 import { useState } from 'react';
 import news from '../api/news';
 
-export const useHighlights = ({ country }) => {
-	const fetchHighlights = async page => {
-		try {
-			let response = await news.get('/highlights', {
-				params: {
-					country,
-					page,
-					pageSize: 10
-				}
-			});
-			setHighlights(response.data.articles);
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
-	const [highlights, setHighlights] = useState([]);
-
-	return [highlights, fetchHighlights];
+export const fetchHighlights = async ({ country, page }) => {
+	try {
+		let response = await news.get('/highlights', {
+			params: {
+				country,
+				page,
+				pageSize: 10
+			}
+		});
+		return response.data.articles;
+	} catch (err) {
+		console.log(err);
+		return [];
+	}
 };
 
 export const useRecents = ({ country }) => {

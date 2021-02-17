@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-const CategoryNewsScreen = () => {
-	return <Text>CategoryNewsScreen</Text>;
+const CategoryNewsScreen = ({ category }) => {
+	return <Text>{category}</Text>;
 };
 
 export default CategoryNewsScreen;

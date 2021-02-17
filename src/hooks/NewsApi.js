@@ -2,11 +2,13 @@ import { useState } from 'react';
 import news from '../api/news';
 
 export const useHighlights = ({ country }) => {
-	const fetchHighlights = async () => {
+	const fetchHighlights = async page => {
 		try {
 			let response = await news.get('/highlights', {
 				params: {
-					country
+					country,
+					page,
+					pageSize: 10
 				}
 			});
 			setHighlights(response.data.articles);

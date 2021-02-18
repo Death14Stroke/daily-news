@@ -5,9 +5,8 @@ import { fetchHighlights, useRecents } from '../hooks/NewsApi';
 import NewsCard from '../components/NewsCard';
 import RecentNewsCard from '../components/RecentNewsCard';
 import PagedList from '../components/PagedList';
-import news from '../api/news';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
 	const [recents, fetchRecents] = useRecents({ country: 'in' });
 
 	const renderHighlight = ({ item, index }) => {
@@ -17,6 +16,9 @@ const HomeScreen = () => {
 				date={format(new Date(item.publishedAt), 'MMMM dd, yyyy')}
 				imageUri={item.urlToImage}
 				cardStyle={index === 0 ? { marginLeft: 20 } : { marginLeft: 0 }}
+				onPress={() => {
+					navigation.navigate('Details', { news: item });
+				}}
 			/>
 		);
 	};
@@ -26,9 +28,17 @@ const HomeScreen = () => {
 				title={item.title}
 				category={item.category}
 				imageUri={item.urlToImage}
+				onPress={() => {
+					navigation.navigate('Details', { news: item });
+				}}
 			/>
 		);
 	};
+
+	useEffect(() => {
+		console.log('called useEffect');
+		fetchRecents();
+	}, []);
 
 	return (
 		<ScrollView style={{ paddingTop: 20 }}>
@@ -38,27 +48,20 @@ const HomeScreen = () => {
 					renderItem={renderHighlight}
 					horizontal
 					loadData={page => {
-						console.log('page =', page);
 						return fetchHighlights({ country: 'in', page });
 					}}
 					firstPage={1}
-					threshold={3}
+					threshold={0.5}
 				/>
-				{/* <FlatList
-					data={highlights}
-					keyExtractor={news => news.url}
-					renderItem={renderHighlight}
-					horizontal
-				/> */}
 				<Text style={styles.titleStyle}>Recent News</Text>
-				{/* <View>
-				<FlatList
-					style={{ marginTop: 10 }}
-					data={recents}
-					keyExtractor={news => news.url}
-					renderItem={renderRecent}
-				/>
-			</View> */}
+				<View>
+					<FlatList
+						style={{ marginTop: 10 }}
+						data={recents}
+						keyExtractor={news => news.url}
+						renderItem={renderRecent}
+					/>
+				</View>
 			</View>
 		</ScrollView>
 	);

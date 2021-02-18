@@ -18,6 +18,7 @@ import AppLoading from 'expo-app-loading';
 import HomeScreen from './src/screens/HomeScreen';
 import Colors from './colors';
 import CategoryNewsScreen from './src/screens/CategoryNewsScreen';
+import DetailsScreen from './src/screens/DetailsScreen';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -116,6 +117,7 @@ const App = () => {
 						options={{ headerStyle: { elevation: 0 } }}>
 						{createTabs}
 					</Stack.Screen>
+					<Stack.Screen name='Details' component={DetailsScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</AppearanceProvider>

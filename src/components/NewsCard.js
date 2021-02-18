@@ -1,21 +1,29 @@
 import React from 'react';
-import { View, Text, ImageBackground, StyleSheet } from 'react-native';
+import {
+	View,
+	Text,
+	ImageBackground,
+	TouchableOpacity,
+	StyleSheet
+} from 'react-native';
 
-const NewsCard = ({ title, date, imageUri, cardStyle }) => {
+const NewsCard = ({ title, date, imageUri, cardStyle, onPress }) => {
 	return (
-		<ImageBackground
-			source={{ uri: imageUri }}
-			style={[styles.image, cardStyle]}>
-			<View style={styles.textContainer}>
-				<Text
-					style={styles.title}
-					numberOfLines={3}
-					ellipsizeMode='tail'>
-					{title}
-				</Text>
-				<Text style={styles.date}>{date}</Text>
-			</View>
-		</ImageBackground>
+		<TouchableOpacity onPress={onPress}>
+			<ImageBackground
+				source={{ uri: imageUri }}
+				style={[styles.image, cardStyle]}>
+				<View style={styles.textContainer}>
+					<Text
+						style={styles.title}
+						numberOfLines={3}
+						ellipsizeMode='tail'>
+						{title}
+					</Text>
+					<Text style={styles.date}>{date}</Text>
+				</View>
+			</ImageBackground>
+		</TouchableOpacity>
 	);
 };
 
@@ -26,12 +34,12 @@ const styles = StyleSheet.create({
 		resizeMode: 'cover',
 		borderRadius: 5,
 		overflow: 'hidden',
-		elevation: 10,
+		elevation: 2,
 		marginRight: 20
 	},
 	textContainer: {
-		bottom: 0,
-		position: 'absolute'
+		flex: 1,
+		justifyContent: 'flex-end'
 	},
 	title: {
 		color: 'white',

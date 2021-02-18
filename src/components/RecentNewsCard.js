@@ -1,24 +1,30 @@
 import React from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-elements';
+import Colors from '../../colors';
 
-const RecentNewsCard = ({ title, category, imageUri }) => {
+const RecentNewsCard = ({ title, category, imageUri, onPress }) => {
 	return (
 		<Card containerStyle={styles.cardContainer}>
-			<View style={{ flexDirection: 'row' }}>
-				<View style={styles.imageContainer}>
-					<Image source={{ uri: imageUri }} style={styles.image} />
+			<TouchableOpacity onPress={onPress}>
+				<View style={{ flexDirection: 'row' }}>
+					<View style={styles.imageContainer}>
+						<Image
+							source={{ uri: imageUri }}
+							style={styles.image}
+						/>
+					</View>
+					<View style={styles.textContainer}>
+						<Text style={styles.category}>{category}</Text>
+						<Text
+							style={styles.title}
+							numberOfLines={3}
+							ellipsizeMode='tail'>
+							{title}
+						</Text>
+					</View>
 				</View>
-				<View style={styles.textContainer}>
-					<Text style={styles.category}>{category}</Text>
-					<Text
-						style={styles.title}
-						numberOfLines={3}
-						ellipsizeMode='tail'>
-						{title}
-					</Text>
-				</View>
-			</View>
+			</TouchableOpacity>
 		</Card>
 	);
 };
@@ -48,7 +54,7 @@ const styles = StyleSheet.create({
 		padding: 15
 	},
 	category: {
-		color: '#E93D25',
+		color: Colors.cinnabar,
 		fontWeight: 'bold',
 		position: 'absolute',
 		padding: 15

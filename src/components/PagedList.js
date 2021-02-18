@@ -5,7 +5,8 @@ const getInitialState = firstPage => {
 	return {
 		data: [],
 		page: firstPage,
-		hasMore: true
+		hasMore: true,
+		onEndReached: false
 	};
 };
 
@@ -22,6 +23,8 @@ const reducer = (state, action) => {
 				...state,
 				hasMore: false
 			};
+		case 'update_end_reached':
+			return { ...state, onEndReached: action.payload };
 		default:
 			return state;
 	}
@@ -36,7 +39,7 @@ const PagedList = ({
 	threshold = 1
 }) => {
 	const [state, dispatch] = useReducer(reducer, getInitialState(firstPage));
-	const { data, page, hasMore } = state;
+	const { data, page, hasMore, onEndReached } = state;
 
 	const onLoadData = async () => {
 		console.log('loading page: ', page);
@@ -62,10 +65,14 @@ const PagedList = ({
 			renderItem={renderItem}
 			horizontal={horizontal}
 			onEndReachedThreshold={threshold}
+			showsHorizontalScrollIndicator={false}
+			onMomentumScrollBegin={() =>
+				dispatch({ type: 'update_end_reached', payload: false })
+			}
 			onEndReached={() => {
-				console.log('onEndReached');
-				if (hasMore) {
+				if (!onEndReached && hasMore) {
 					onLoadData();
+					dispatch({ type: 'update_end_reached', payload: true });
 				}
 			}}
 		/>

@@ -45,13 +45,15 @@ const styles = StyleSheet.create({
 		color: 'white',
 		padding: 10,
 		paddingBottom: 0,
+		fontFamily: 'Roboto_400Regular',
 		fontSize: 16
 	},
 	date: {
 		color: 'lightgray',
 		padding: 10,
 		fontSize: 14,
-		marginBottom: 10
+		marginBottom: 10,
+		fontFamily: 'Roboto_300Light'
 	}
 });
 

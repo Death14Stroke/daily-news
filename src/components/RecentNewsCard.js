@@ -55,13 +55,13 @@ const styles = StyleSheet.create({
 	},
 	category: {
 		color: Colors.cinnabar,
-		fontWeight: 'bold',
 		position: 'absolute',
-		padding: 15
+		padding: 15,
+		fontFamily: 'Roboto_500Medium'
 	},
 	title: {
 		fontSize: 20,
-		fontWeight: 'bold',
+		fontFamily: 'Roboto_500Medium',
 		flex: 1,
 		textAlignVertical: 'center'
 	}

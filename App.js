@@ -117,7 +117,11 @@ const App = () => {
 						options={{ headerStyle: { elevation: 0 } }}>
 						{createTabs}
 					</Stack.Screen>
-					<Stack.Screen name='Details' component={DetailsScreen} />
+					<Stack.Screen
+						name='Details'
+						component={DetailsScreen}
+						options={{ headerShown: false }}
+					/>
 				</Stack.Navigator>
 			</NavigationContainer>
 		</AppearanceProvider>

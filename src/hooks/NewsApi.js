@@ -1,37 +1,76 @@
 import { useState } from 'react';
 import news from '../api/news';
 
-export const fetchHighlights = async ({ country, page }) => {
+export const fetchHighlights = async ({ country, page, category = null }) => {
 	try {
-		let response = await news.get('/highlights', {
+		let { data } = await news.get('/highlights', {
 			params: {
 				country,
+				category,
 				page,
 				pageSize: 10
 			}
 		});
-		return response.data.articles;
+		return data.articles;
 	} catch (err) {
 		console.log(err);
 		return [];
 	}
 };
 
-export const useRecents = ({ country }) => {
-	const fetchRecents = async () => {
+export const searchArticles = async ({ query, language, page }) => {
+	try {
+		let { data } = await news.get('/search', {
+			params: {
+				query,
+				language,
+				page,
+				pageSize: 10
+			}
+		});
+		return data.articles;
+	} catch (err) {
+		console.log(err);
+		return [];
+	}
+};
+
+export const useSources = ({ country, category, language }) => {
+	const [sources, setSources] = useState([]);
+
+	const fetchSources = async () => {
 		try {
-			let response = await news.get('/recents', {
+			let { data } = await news.get('/sources', {
 				params: {
-					country
+					country,
+					category,
+					language
 				}
 			});
-			setRecents(response.data.recents);
+			setSources(data.sources);
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
+	return [sources, fetchSources];
+};
+
+export const useRecents = ({ country }) => {
 	const [recents, setRecents] = useState([]);
+
+	const fetchRecents = async () => {
+		try {
+			let { data } = await news.get('/recents', {
+				params: {
+					country
+				}
+			});
+			setRecents(data.recents);
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	return [recents, fetchRecents];
 };

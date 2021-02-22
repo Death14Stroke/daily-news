@@ -3,29 +3,25 @@ import {
 	View,
 	Text,
 	TouchableOpacity,
-	Image,
 	StyleSheet,
 	Linking
 } from 'react-native';
-import { Card } from 'react-native-elements';
+import { Avatar, Card } from 'react-native-elements';
 
 const SourceCard = ({ source }) => {
 	const { name, description, url } = source;
 
 	return (
 		<Card containerStyle={styles.cardContainer}>
-			<TouchableOpacity
-				onPress={() => {
-					Linking.openURL(url);
-				}}>
-				<View style={{ flexDirection: 'row' }}>
+			<TouchableOpacity onPress={() => Linking.openURL(url)}>
+				<View style={{ flexDirection: 'row', height: '100%' }}>
 					<View style={styles.imageContainer}>
-						<Image
-							source={{
-								uri:
-									'https://cdn.vox-cdn.com/thumbor/eiMyaiOm1ohRG8Wvgo0uz_kq_jI=/0x0:5568x2915/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/22318335/1303251729.jpg'
-							}}
-							style={styles.image}
+						<Avatar
+							size='large'
+							rounded
+							title={name.charAt(0)}
+							source={{ uri: 'dsfds' }}
+							containerStyle={{ alignSelf: 'center' }}
 						/>
 					</View>
 					<View style={styles.textContainer}>
@@ -47,7 +43,7 @@ const styles = StyleSheet.create({
 	cardContainer: {
 		padding: 0,
 		borderWidth: 0,
-		height: 175,
+		height: 150,
 		margin: 0,
 		marginHorizontal: 20,
 		marginBottom: 20,
@@ -55,22 +51,17 @@ const styles = StyleSheet.create({
 		elevation: 2
 	},
 	imageContainer: {
-		flex: 2,
-		height: '100%'
-	},
-	image: {
-		height: '100%',
-		borderTopLeftRadius: 5,
-		borderBottomLeftRadius: 5
+		flex: 1,
+		justifyContent: 'center'
 	},
 	textContainer: {
 		flex: 3,
-		padding: 15
+		paddingVertical: 15,
+		paddingEnd: 15,
+		paddingStart: 5
 	},
 	name: {
 		color: Colors.cinnabar,
-		position: 'absolute',
-		padding: 15,
 		fontFamily: 'Roboto_500Medium',
 		fontSize: 18
 	},

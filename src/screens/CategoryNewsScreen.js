@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Text, View, ScrollView, FlatList, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
+import { Context as SourceContext } from '../context/SourceContext';
 import PagedList from '../components/PagedList';
 import NewsCard from '../components/NewsCard';
 import { fetchHighlights, useSources } from '../hooks/NewsApi';
@@ -9,15 +10,8 @@ import SourceCard from '../components/SourceCard';
 
 const CategoryNewsScreen = ({ category }) => {
 	const navigation = useNavigation();
-	const [sources, fetchSources] = useSources({
-		country: 'in',
-		category,
-		language: 'en'
-	});
-
-	useEffect(() => {
-		fetchSources();
-	}, []);
+	const { state } = useContext(SourceContext);
+	const sources = state.filter(source => source.category === category);
 
 	const renderHighlight = ({ item, index }) => {
 		return (
@@ -38,31 +32,33 @@ const CategoryNewsScreen = ({ category }) => {
 	};
 
 	return (
-		<ScrollView style={{ paddingTop: 20 }}>
-			<View>
-				<PagedList
-					keyExtractor={news => news.url + Math.random()}
-					renderItem={renderHighlight}
-					horizontal
-					loadData={page => {
-						return fetchHighlights({
-							country: 'in',
-							category,
-							page
-						});
-					}}
-					firstPage={1}
-					threshold={0.5}
-				/>
-				<Text style={styles.titleStyle}>Top sources</Text>
-				<FlatList
-					style={{ marginTop: 10 }}
-					data={sources}
-					keyExtractor={source => source.id}
-					renderItem={renderSource}
-				/>
-			</View>
-		</ScrollView>
+		<FlatList
+			style={{ marginTop: 10 }}
+			data={sources}
+			keyExtractor={source => source.id}
+			renderItem={renderSource}
+			ListHeaderComponent={() => {
+				return (
+					<>
+						<PagedList
+							keyExtractor={news => news.url + Math.random()}
+							renderItem={renderHighlight}
+							horizontal
+							loadData={page => {
+								return fetchHighlights({
+									country: 'in',
+									category,
+									page
+								});
+							}}
+							firstPage={1}
+							threshold={0.5}
+						/>
+						<Text style={styles.titleStyle}>Top sources</Text>
+					</>
+				);
+			}}
+		/>
 	);
 };
 

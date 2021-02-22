@@ -22,6 +22,7 @@ const HomeScreen = ({ navigation }) => {
 			/>
 		);
 	};
+
 	const renderRecent = ({ item }) => {
 		return (
 			<RecentNewsCard
@@ -41,29 +42,32 @@ const HomeScreen = ({ navigation }) => {
 	}, []);
 
 	return (
-		<ScrollView style={{ paddingTop: 20 }}>
-			<View>
-				<PagedList
-					keyExtractor={news => news.url + Math.random()}
-					renderItem={renderHighlight}
-					horizontal
-					loadData={page => {
-						return fetchHighlights({ country: 'in', page });
-					}}
-					firstPage={1}
-					threshold={0.5}
-				/>
-				<Text style={styles.titleStyle}>Recent News</Text>
-				<View>
-					<FlatList
-						style={{ marginTop: 10 }}
-						data={recents}
-						keyExtractor={news => news.url}
-						renderItem={renderRecent}
-					/>
-				</View>
-			</View>
-		</ScrollView>
+		<FlatList
+			style={{ marginTop: 10, marginBottom: 10 }}
+			data={recents}
+			keyExtractor={news => news.url}
+			renderItem={renderRecent}
+			ListHeaderComponent={() => {
+				return (
+					<>
+						<PagedList
+							keyExtractor={news => news.url + Math.random()}
+							renderItem={renderHighlight}
+							horizontal
+							loadData={page => {
+								return fetchHighlights({
+									country: 'in',
+									page
+								});
+							}}
+							firstPage={1}
+							threshold={0.5}
+						/>
+						<Text style={styles.titleStyle}>Recent News</Text>
+					</>
+				);
+			}}
+		/>
 	);
 };
 

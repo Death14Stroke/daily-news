@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { StatusBar, TouchableOpacity } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import {
 	NavigationContainer,
@@ -29,6 +30,7 @@ import DiscoverScreen from './src/screens/DiscoverScreen';
 import BookmarksScreen from './src/screens/BookmarksScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import SearchScreen from './src/screens/SearchScreen';
+import SplashScreen from './src/screens/SplashScreen';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -110,7 +112,30 @@ const createStack = () => {
 				component={DetailsScreen}
 				options={{ headerShown: false }}
 			/>
-			<Stack.Screen name='Search' component={SearchScreen} />
+			<Stack.Screen
+				name='Search'
+				component={SearchScreen}
+				// options={{
+				// 	headerTitle: () => {
+				// 		return (
+				// 			<SearchBar
+				// 				placeholder='Search...'
+				// 				//onChangeText={setQuery}
+				// 				//value={query}
+				// 				onSubmitEditing={() => {
+				// 					// const results = searchArticles({
+				// 					// 	query,
+				// 					// 	language: 'en',
+				// 					// 	page: 0
+				// 					// });
+				// 					// console.log(results);
+				// 					// setArticles(results);
+				// 				}}
+				// 			/>
+				// 		);
+				// 	}
+				// }}
+			/>
 		</Stack.Navigator>
 	);
 };
@@ -137,11 +162,6 @@ const App = () => {
 	const scheme = useColorScheme();
 	const { theme, barStyle, backgroundColor } = getStylesFromTheme(scheme);
 
-	// const { fetchSources } = useContext(SourceContext);
-	// useEffect(() => {
-	// 	fetchSources();
-	// }, []);
-
 	let [fontsLoaded] = useFonts({
 		Roboto_300Light,
 		Roboto_400Regular,
@@ -155,66 +175,68 @@ const App = () => {
 	return (
 		<AppearanceProvider>
 			<SourceProvider>
-				<NavigationContainer theme={theme}>
-					<StatusBar
-						barStyle={barStyle}
-						backgroundColor={backgroundColor}
-					/>
-					<BottomTab.Navigator>
-						<BottomTab.Screen
-							name='Home'
-							options={{
-								tabBarIcon: ({ color, size }) => (
-									<Ionicons
-										name='home-sharp'
-										size={size}
-										color={color}
-									/>
-								)
-							}}
-							component={createStack}
+				<SplashScreen>
+					<NavigationContainer theme={theme}>
+						<StatusBar
+							barStyle={barStyle}
+							backgroundColor={backgroundColor}
 						/>
-						<BottomTab.Screen
-							name='Discover'
-							component={DiscoverScreen}
-							options={{
-								tabBarIcon: ({ color, size }) => (
-									<Ionicons
-										name='globe-outline'
-										size={size}
-										color={color}
-									/>
-								)
-							}}
-						/>
-						<BottomTab.Screen
-							name='Bookmark'
-							component={BookmarksScreen}
-							options={{
-								tabBarIcon: ({ color, size }) => (
-									<Ionicons
-										name='bookmark-outline'
-										size={size}
-										color={color}
-									/>
-								)
-							}}
-						/>
-						<BottomTab.Screen
-							name='Settings'
-							component={SettingsScreen}
-							options={{
-								tabBarIcon: ({ color, size }) => (
-									<Ionicons
-										name='settings-outline'
-										size={size}
-										color={color}
-									/>
-								)
-							}}
-						/>
-					</BottomTab.Navigator>
-				</NavigationContainer>
+						<BottomTab.Navigator>
+							<BottomTab.Screen
+								name='Home'
+								options={{
+									tabBarIcon: ({ color, size }) => (
+										<Ionicons
+											name='home-sharp'
+											size={size}
+											color={color}
+										/>
+									)
+								}}
+								component={createStack}
+							/>
+							<BottomTab.Screen
+								name='Discover'
+								component={DiscoverScreen}
+								options={{
+									tabBarIcon: ({ color, size }) => (
+										<Ionicons
+											name='globe-outline'
+											size={size}
+											color={color}
+										/>
+									)
+								}}
+							/>
+							<BottomTab.Screen
+								name='Bookmark'
+								component={BookmarksScreen}
+								options={{
+									tabBarIcon: ({ color, size }) => (
+										<Ionicons
+											name='bookmark-outline'
+											size={size}
+											color={color}
+										/>
+									)
+								}}
+							/>
+							<BottomTab.Screen
+								name='Settings'
+								component={SettingsScreen}
+								options={{
+									tabBarIcon: ({ color, size }) => (
+										<Ionicons
+											name='settings-outline'
+											size={size}
+											color={color}
+										/>
+									)
+								}}
+							/>
+						</BottomTab.Navigator>
+					</NavigationContainer>
+				</SplashScreen>
 			</SourceProvider>
 		</AppearanceProvider>
 	);

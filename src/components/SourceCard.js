@@ -8,23 +8,28 @@ import {
 } from 'react-native';
 import { Avatar, Card } from 'react-native-elements';
 
-const SourceCard = ({ source }) => {
+const SourceCard = ({
+	source,
+	style,
+	imageContainerStyle,
+	textContainerStyle
+}) => {
 	const { name, description, url } = source;
 
 	return (
-		<Card containerStyle={styles.cardContainer}>
+		<Card containerStyle={[styles.cardContainer, style]}>
 			<TouchableOpacity onPress={() => Linking.openURL(url)}>
 				<View style={{ flexDirection: 'row', height: '100%' }}>
-					<View style={styles.imageContainer}>
+					<View style={[styles.imageContainer, imageContainerStyle]}>
 						<Avatar
-							size='large'
+							size='medium'
 							rounded
 							title={name.charAt(0)}
 							source={{ uri: 'dsfds' }}
 							containerStyle={{ alignSelf: 'center' }}
 						/>
 					</View>
-					<View style={styles.textContainer}>
+					<View style={[styles.textContainer, textContainerStyle]}>
 						<Text style={styles.name}>{name}</Text>
 						<Text
 							style={styles.description}
@@ -45,17 +50,13 @@ const styles = StyleSheet.create({
 		borderWidth: 0,
 		height: 150,
 		margin: 0,
-		marginHorizontal: 20,
-		marginBottom: 20,
 		borderRadius: 5,
 		elevation: 2
 	},
 	imageContainer: {
-		flex: 1,
 		justifyContent: 'center'
 	},
 	textContainer: {
-		flex: 3,
 		paddingVertical: 15,
 		paddingEnd: 15,
 		paddingStart: 5

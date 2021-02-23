@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation }) => {
 
 	return (
 		<FlatList
-			style={{ marginTop: 10, marginBottom: 10 }}
+			style={{ marginTop: 10 }}
 			data={recents}
 			keyExtractor={news => news.url}
 			renderItem={renderRecent}
@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
 	titleStyle: {
 		color: 'gray',
 		marginLeft: 20,
-		marginTop: 20,
+		marginTop: 15,
+		marginBottom: 15,
 		fontFamily: 'Roboto_500Medium',
 		fontSize: 18
 	}

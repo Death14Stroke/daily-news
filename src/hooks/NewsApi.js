@@ -28,6 +28,7 @@ export const searchArticles = async ({ query, language, page }) => {
 				pageSize: 10
 			}
 		});
+		//console.log('articles:', data.articles);
 		return data.articles;
 	} catch (err) {
 		console.log(err);

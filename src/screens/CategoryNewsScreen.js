@@ -1,17 +1,21 @@
-import React, { useContext, useEffect } from 'react';
-import { Text, View, ScrollView, FlatList, StyleSheet } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Text, FlatList, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
 import { Context as SourceContext } from '../context/SourceContext';
 import PagedList from '../components/PagedList';
 import NewsCard from '../components/NewsCard';
-import { fetchHighlights, useSources } from '../hooks/NewsApi';
+import { fetchHighlights } from '../hooks/NewsApi';
 import SourceCard from '../components/SourceCard';
 
 const CategoryNewsScreen = ({ category }) => {
 	const navigation = useNavigation();
 	const { state } = useContext(SourceContext);
-	const sources = state.filter(source => source.category === category);
+	const [sources, setSources] = useState([]);
+
+	useEffect(() => {
+		setSources(state.filter(source => source.category === category));
+	}, []);
 
 	const renderHighlight = ({ item, index }) => {
 		return (
@@ -28,8 +32,17 @@ const CategoryNewsScreen = ({ category }) => {
 	};
 
 	const renderSource = ({ item }) => {
-		return <SourceCard source={item} />;
+		return (
+			<SourceCard
+				source={item}
+				style={{ marginHorizontal: 20, marginBottom: 20 }}
+				imageContainerStyle={{ flex: 1 }}
+				textContainerStyle={{ flex: 4 }}
+			/>
+		);
 	};
+
+	console.log('category:', category, sources.length);
 
 	return (
 		<FlatList
@@ -66,9 +79,10 @@ const styles = StyleSheet.create({
 	titleStyle: {
 		color: 'gray',
 		marginLeft: 20,
-		marginTop: 20,
+		marginTop: 15,
 		fontFamily: 'Roboto_500Medium',
-		fontSize: 18
+		fontSize: 18,
+		marginBottom: 15
 	}
 });
 

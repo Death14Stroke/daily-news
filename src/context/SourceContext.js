@@ -12,7 +12,7 @@ const sourceReducer = (state, action) => {
 	}
 };
 
-const fetchSources = dispatch => async ({ country, language }) => {
+const fetchSources = dispatch => async ({ country, language }, callback) => {
 	try {
 		let { data } = await news.get('/sources', {
 			params: {
@@ -21,6 +21,7 @@ const fetchSources = dispatch => async ({ country, language }) => {
 			}
 		});
 		dispatch({ type: 'fetch_sources', payload: data.sources });
+		callback();
 	} catch (err) {
 		console.log(err);
 	}

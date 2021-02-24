@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
+import { Context as BookmarkContext } from '../context/BookmarkContext';
 import CollapsingHeader from '../components/CollapsingHeader';
 import Colors from '../../colors';
 
@@ -10,23 +11,22 @@ const HEADER_HEIGHT = 80;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 
 const DetailsScreen = ({ navigation, route }) => {
+	const { news } = route.params;
 	const {
-		news: {
-			urlToImage,
-			category,
-			title,
-			description,
-			content,
-			author,
-			publishedAt
-		}
-	} = route.params;
+		urlToImage,
+		category = 'All',
+		title,
+		description,
+		content,
+		author,
+		publishedAt
+	} = news;
+	const { addBookmark, isBookmarked } = useContext(BookmarkContext);
 
 	const renderNavBar = () => (
 		<View style={{ marginLeft: 10 }}>
 			<View style={styles.navBar}>
 				<TouchableOpacity
-					style={styles.iconLeft}
 					onPress={() => {
 						navigation.pop();
 					}}>
@@ -39,9 +39,24 @@ const DetailsScreen = ({ navigation, route }) => {
 	const renderContent = () => {
 		return (
 			<>
-				{category ? (
+				<View style={{ flexDirection: 'row' }}>
 					<Text style={styles.category}>{category}</Text>
-				) : null}
+					<TouchableOpacity
+						style={styles.bookmark}
+						onPress={() => {
+							addBookmark(news);
+						}}>
+						<Ionicons
+							name={
+								isBookmarked(news)
+									? 'bookmark'
+									: 'bookmark-outline'
+							}
+							size={24}
+							color='black'
+						/>
+					</TouchableOpacity>
+				</View>
 				<Text style={styles.title}>{title}</Text>
 				<View style={styles.authorContainer}>
 					<Text style={styles.author}>
@@ -127,6 +142,11 @@ const styles = StyleSheet.create({
 		fontFamily: 'Roboto_400Regular',
 		color: 'gray',
 		lineHeight: 20
+	},
+	bookmark: {
+		alignSelf: 'center',
+		position: 'absolute',
+		end: 0
 	}
 });
 

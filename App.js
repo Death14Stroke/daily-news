@@ -19,10 +19,8 @@ import {
 } from '@expo-google-fonts/roboto';
 import AppLoading from 'expo-app-loading';
 import Colors from './colors';
-import {
-	Provider as SourceProvider,
-	Context as SourceContext
-} from './src/context/SourceContext';
+import { Provider as SourceProvider } from './src/context/SourceContext';
+import { Provider as BookmarkProvider } from './src/context/BookmarkContext';
 import HomeScreen from './src/screens/HomeScreen';
 import CategoryNewsScreen from './src/screens/CategoryNewsScreen';
 import DetailsScreen from './src/screens/DetailsScreen';
@@ -175,68 +173,70 @@ const App = () => {
 	return (
 		<AppearanceProvider>
 			<SourceProvider>
-				<SplashScreen>
-					<NavigationContainer theme={theme}>
-						<StatusBar
-							barStyle={barStyle}
-							backgroundColor={backgroundColor}
-						/>
-						<BottomTab.Navigator>
-							<BottomTab.Screen
-								name='Home'
-								options={{
-									tabBarIcon: ({ color, size }) => (
-										<Ionicons
-											name='home-sharp'
-											size={size}
-											color={color}
-										/>
-									)
-								}}
-								component={createStack}
+				<BookmarkProvider>
+					<SplashScreen>
+						<NavigationContainer theme={theme}>
+							<StatusBar
+								barStyle={barStyle}
+								backgroundColor={backgroundColor}
 							/>
-							<BottomTab.Screen
-								name='Discover'
-								component={DiscoverScreen}
-								options={{
-									tabBarIcon: ({ color, size }) => (
-										<Ionicons
-											name='globe-outline'
-											size={size}
-											color={color}
-										/>
-									)
-								}}
-							/>
-							<BottomTab.Screen
-								name='Bookmark'
-								component={BookmarksScreen}
-								options={{
-									tabBarIcon: ({ color, size }) => (
-										<Ionicons
-											name='bookmark-outline'
-											size={size}
-											color={color}
-										/>
-									)
-								}}
-							/>
-							<BottomTab.Screen
-								name='Settings'
-								component={SettingsScreen}
-								options={{
-									tabBarIcon: ({ color, size }) => (
-										<Ionicons
-											name='settings-outline'
-											size={size}
-											color={color}
-										/>
-									)
-								}}
-							/>
-						</BottomTab.Navigator>
-					</NavigationContainer>
-				</SplashScreen>
+							<BottomTab.Navigator>
+								<BottomTab.Screen
+									name='Home'
+									options={{
+										tabBarIcon: ({ color, size }) => (
+											<Ionicons
+												name='home-sharp'
+												size={size}
+												color={color}
+											/>
+										)
+									}}
+									component={createStack}
+								/>
+								<BottomTab.Screen
+									name='Discover'
+									component={DiscoverScreen}
+									options={{
+										tabBarIcon: ({ color, size }) => (
+											<Ionicons
+												name='globe-outline'
+												size={size}
+												color={color}
+											/>
+										)
+									}}
+								/>
+								<BottomTab.Screen
+									name='Bookmark'
+									component={BookmarksScreen}
+									options={{
+										tabBarIcon: ({ color, size }) => (
+											<Ionicons
+												name='bookmark-outline'
+												size={size}
+												color={color}
+											/>
+										)
+									}}
+								/>
+								<BottomTab.Screen
+									name='Settings'
+									component={SettingsScreen}
+									options={{
+										tabBarIcon: ({ color, size }) => (
+											<Ionicons
+												name='settings-outline'
+												size={size}
+												color={color}
+											/>
+										)
+									}}
+								/>
+							</BottomTab.Navigator>
+						</NavigationContainer>
+					</SplashScreen>
+				</BookmarkProvider>
 			</SourceProvider>
 		</AppearanceProvider>
 	);

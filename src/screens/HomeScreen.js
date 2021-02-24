@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, Text, FlatList, ScrollView, StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { format } from 'date-fns';
 import { fetchHighlights, useRecents } from '../hooks/NewsApi';
 import NewsCard from '../components/NewsCard';

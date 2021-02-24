@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-elements';
 import Colors from '../../colors';
@@ -67,4 +67,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default RecentNewsCard;
+const arePropsEqual = (prevProps, nextProps) => {
+	return (
+		prevProps.title === nextProps.title &&
+		prevProps.category === nextProps.category
+	);
+};
+
+export default memo(RecentNewsCard, arePropsEqual);

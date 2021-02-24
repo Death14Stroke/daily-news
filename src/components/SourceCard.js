@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
 	View,
 	Text,
@@ -74,4 +74,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SourceCard;
+const arePropsEqual = (prevProps, nextProps) => {
+	return prevProps.source.id === nextProps.source.id;
+};
+
+export default memo(SourceCard, arePropsEqual);

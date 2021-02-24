@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
 	View,
 	Text,
@@ -57,4 +57,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default NewsCard;
+const arePropsEqual = (prevProps, nextProps) => {
+	return prevProps.title === nextProps.title;
+};
+
+export default memo(NewsCard, arePropsEqual);

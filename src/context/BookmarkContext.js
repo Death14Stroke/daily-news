@@ -25,15 +25,18 @@ const deleteBookmark = dispatch => news => {
 	dispatch({ type: 'delete_bookmark', payload: news });
 };
 
-const isBookmarked = dispatch => news => {
-	return state.find(n => n.url === news.url) !== undefined ? true : false;
-};
-
 const createBookmarkContext = () => {
 	const Context = createContext();
 
 	const Provider = ({ children }) => {
 		const [state, dispatch] = useReducer(bookmarkReducer, INITIAL_STATE);
+
+		const isBookmarked = dispatch => news => {
+			return state.find(n => n.url === news.url) !== undefined
+				? true
+				: false;
+		};
+
 		const actions = { addBookmark, deleteBookmark, isBookmarked };
 
 		useEffect(() => {

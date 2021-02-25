@@ -62,7 +62,6 @@ const HomeScreen = ({ navigation }) => {
 								});
 							}}
 							firstPage={1}
-							threshold={0.5}
 						/>
 						<Text style={styles.titleStyle}>Recent News</Text>
 					</>

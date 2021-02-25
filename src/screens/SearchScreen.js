@@ -1,13 +1,13 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { searchArticles } from '../hooks/NewsApi';
 import RecentNewsCard from '../components/RecentNewsCard';
+import PagedList from '../components/PagedList';
 
 const SearchScreen = ({ navigation }) => {
 	const [query, setQuery] = useState('');
-	const [articles, setArticles] = useState([]);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -63,21 +63,30 @@ const SearchScreen = ({ navigation }) => {
 		);
 	};
 
-	const fetchSearchResults = async () => {
+	const fetchSearchResults = async page => {
+		if (query === '') {
+			console.log('empty query');
+			return [];
+		}
+
 		const results = await searchArticles({
 			query,
 			language: 'en',
-			page: 1
+			page
 		});
-		console.log('results:', results);
-		setArticles(results);
+		console.log('results:', results.length);
+		return results;
 	};
 
 	return (
-		<FlatList
-			data={articles}
-			keyExtractor={news => news.title}
+		<PagedList
+			keyExtractor={news => news}
 			renderItem={renderNewsCard}
+			loadData={page => {
+				return fetchSearchResults(page);
+			}}
+			firstPage={1}
+			horizontal
 		/>
 	);
 };

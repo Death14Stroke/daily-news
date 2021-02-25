@@ -1,12 +1,5 @@
 import React, { useContext } from 'react';
-import {
-	Text,
-	FlatList,
-	ScrollView,
-	View,
-	StyleSheet,
-	Dimensions
-} from 'react-native';
+import { Text, FlatList, View, StyleSheet, Dimensions } from 'react-native';
 import { Context as SourceContext } from '../context/SourceContext';
 import SourceCard from '../components/SourceCard';
 
@@ -23,51 +16,63 @@ const DiscoverScreen = () => {
 		'sports',
 		'technology'
 	];
+	const sections = categories.map(category => {
+		return {
+			title: category,
+			data: state.filter(news => news.category === category)
+		};
+	});
 
-	const renderSource = ({ item }) => {
+	const renderSource = ({ item, index }) => {
 		return (
 			<SourceCard
 				source={item}
-				style={{ width: SCREEN_WIDTH * 0.75, marginRight: 20 }}
+				style={[
+					styles.soureStyle,
+					{ marginStart: index == 0 ? 20 : 0 }
+				]}
 				imageContainerStyle={{ flex: 1 }}
 				textContainerStyle={{ flex: 4 }}
 			/>
 		);
 	};
 
+	const renderCategorySources = ({ item }) => {
+		return (
+			<View>
+				<Text style={styles.titleStyle}>Top sources in {item}</Text>
+				<FlatList
+					data={state.filter(source => source.category === item)}
+					renderItem={renderSource}
+					keyExtractor={source => source.id}
+					horizontal
+					showsHorizontalScrollIndicator={false}
+				/>
+			</View>
+		);
+	};
+
 	return (
-		<ScrollView>
-			{categories.map(category => {
-				return (
-					<>
-						<Text style={styles.titleStyle}>
-							Top sources in {category}
-						</Text>
-						<FlatList
-							style={{ marginLeft: 20 }}
-							data={state.filter(
-								source => source.category === category
-							)}
-							keyExtractor={source => source.id}
-							renderItem={renderSource}
-							horizontal
-							showsHorizontalScrollIndicator={false}
-						/>
-					</>
-				);
-			})}
-		</ScrollView>
+		<FlatList
+			data={categories}
+			renderItem={renderCategorySources}
+			keyExtractor={category => category}
+		/>
 	);
 };
 
 const styles = StyleSheet.create({
 	titleStyle: {
 		color: 'gray',
-		marginLeft: 20,
-		marginTop: 15,
 		fontFamily: 'Roboto_500Medium',
 		fontSize: 18,
-		marginBottom: 15
+		marginStart: 20
+	},
+	soureStyle: {
+		width: SCREEN_WIDTH * 0.75,
+		marginTop: 15,
+		marginBottom: 15,
+		marginEnd: 20
 	}
 });
 

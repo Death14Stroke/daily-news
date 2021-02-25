@@ -21,7 +21,17 @@ const DetailsScreen = ({ navigation, route }) => {
 		author,
 		publishedAt
 	} = news;
-	const { addBookmark, isBookmarked } = useContext(BookmarkContext);
+	const { addBookmark, deleteBookmark, isBookmarked } = useContext(
+		BookmarkContext
+	);
+
+	const updateBookmark = news => {
+		if (isBookmarked(news)) {
+			deleteBookmark(news);
+		} else {
+			addBookmark(news);
+		}
+	};
 
 	const renderNavBar = () => (
 		<View style={{ marginLeft: 10 }}>
@@ -44,7 +54,7 @@ const DetailsScreen = ({ navigation, route }) => {
 					<TouchableOpacity
 						style={styles.bookmark}
 						onPress={() => {
-							addBookmark(news);
+							updateBookmark(news);
 						}}>
 						<Ionicons
 							name={

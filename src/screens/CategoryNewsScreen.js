@@ -42,8 +42,6 @@ const CategoryNewsScreen = ({ category }) => {
 		);
 	};
 
-	console.log('category:', category, sources.length);
-
 	return (
 		<FlatList
 			style={{ marginTop: 10 }}
@@ -65,7 +63,6 @@ const CategoryNewsScreen = ({ category }) => {
 								});
 							}}
 							firstPage={1}
-							threshold={0.5}
 						/>
 						<Text style={styles.titleStyle}>Top sources</Text>
 					</>

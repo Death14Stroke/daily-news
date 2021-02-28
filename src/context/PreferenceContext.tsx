@@ -2,31 +2,31 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, Dispatch, FC, useEffect, useReducer } from 'react';
 
 interface Preferences {
-	language: string;
+	darkMode: boolean;
 }
 type Action = {
-	type: 'init_preferences' | 'update_language';
+	type: 'init_preferences' | 'update_dark_mode';
 	payload: any;
 };
 type DispatchAction = (dispatch: Dispatch<Action>) => any;
 
 const INITIAL_STATE: Preferences = {
-	language: 'en'
+	darkMode: false
 };
 
 const preferenceReducer = (state: Preferences, action: Action): Preferences => {
 	switch (action.type) {
 		case 'init_preferences':
 			return action.payload;
-		case 'update_language':
-			return { ...state, language: action.payload };
+		case 'update_dark_mode':
+			return { ...state, darkMode: action.payload };
 		default:
 			return state;
 	}
 };
 
-const updateLanguage = (dispatch: Dispatch<Action>) => (language: string) => {
-	dispatch({ type: 'update_language', payload: language });
+const updateDarkMode = (dispatch: Dispatch<Action>) => (darkMode: boolean) => {
+	dispatch({ type: 'update_dark_mode', payload: darkMode });
 };
 
 const createPreferenceContext = () => {
@@ -36,7 +36,7 @@ const createPreferenceContext = () => {
 		const [state, dispatch] = useReducer(preferenceReducer, INITIAL_STATE);
 
 		const actions: { [key: string]: DispatchAction } = {
-			updateLanguage
+			updateDarkMode
 		};
 
 		useEffect(() => {

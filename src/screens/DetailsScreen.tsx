@@ -6,8 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
 import { Context as BookmarkContext } from '../context/BookmarkContext';
 import CollapsingHeader from '../components/CollapsingHeader';
-import Colors from '../../colors';
 import News from '../models/News';
+import { useTheme } from '../models/Themes';
 
 const STATUS_BAR_HEIGHT = 20;
 const HEADER_HEIGHT = 80;
@@ -19,6 +19,7 @@ interface Props {
 }
 
 const DetailsScreen: FC<Props> = ({ navigation, route }) => {
+	const { colors } = useTheme();
 	const { news }: any = route.params;
 	const {
 		urlToImage,
@@ -57,7 +58,10 @@ const DetailsScreen: FC<Props> = ({ navigation, route }) => {
 	const renderContent = () => (
 		<>
 			<View style={{ flexDirection: 'row' }}>
-				<Text style={styles.category}>{category}</Text>
+				<Text
+					style={[styles.category, { color: colors.subtitleColor }]}>
+					{category}
+				</Text>
 				<TouchableOpacity
 					style={styles.bookmark}
 					onPress={() => {
@@ -68,18 +72,20 @@ const DetailsScreen: FC<Props> = ({ navigation, route }) => {
 							isBookmarked(news) ? 'bookmark' : 'bookmark-outline'
 						}
 						size={24}
-						color='black'
+						color={colors.text}
 					/>
 				</TouchableOpacity>
 			</View>
-			<Text style={styles.title}>{title}</Text>
+			<Text style={[styles.title, { color: colors.text }]}>{title}</Text>
 			<View style={styles.authorContainer}>
 				<Text style={styles.author}>By {author || 'Anonymous'} | </Text>
 				<Text style={styles.author}>
 					{format(new Date(publishedAt), 'MMMM dd, yyyy - HH:mm')}
 				</Text>
 			</View>
-			<Text style={styles.description}>{description}</Text>
+			<Text style={[styles.description, { color: colors.text }]}>
+				{description}
+			</Text>
 			<Text style={styles.content}>
 				{content || 'No content available'}
 			</Text>
@@ -96,8 +102,8 @@ const DetailsScreen: FC<Props> = ({ navigation, route }) => {
 			backgroundImageScale={1.2}
 			renderNavBar={renderNavBar}
 			renderContent={renderContent}
-			containerStyle={styles.container}
-			contentContainerStyle={styles.contentContainer}
+			containerStyle={{ backgroundColor: colors.card }}
+			contentContainerStyle={{ flexGrow: 1 }}
 			innerContainerStyle={styles.container}
 		/>
 	);
@@ -105,10 +111,8 @@ const DetailsScreen: FC<Props> = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
-	},
-	contentContainer: {
-		flexGrow: 1,
+		flex: 1,
+		borderRadius: 20,
 		paddingHorizontal: 15
 	},
 	statusBar: {
@@ -124,7 +128,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent'
 	},
 	category: {
-		color: Colors.cinnabar,
 		fontFamily: 'Roboto_500Medium',
 		marginVertical: 15
 	},

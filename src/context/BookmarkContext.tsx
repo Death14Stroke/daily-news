@@ -13,6 +13,7 @@ type Action = {
 	type: 'init_bookmarks' | 'add_bookmark' | 'delete_bookmark';
 	payload: any;
 };
+type DispatchAction = (dispatch: Dispatch<Action>) => any;
 
 const INITIAL_STATE: News[] = [];
 
@@ -39,8 +40,6 @@ const addBookmark = (dispatch: Dispatch<Action>) => (news: News) => {
 const deleteBookmark = (dispatch: Dispatch<Action>) => (news: News) => {
 	dispatch({ type: 'delete_bookmark', payload: news });
 };
-
-type DispatchAction = (dispatch: Dispatch<Action>) => any;
 
 const createBookmarkContext = () => {
 	const Context = createContext<any>(null);

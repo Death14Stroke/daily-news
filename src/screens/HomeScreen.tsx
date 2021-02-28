@@ -8,12 +8,15 @@ import NewsCard from '../components/NewsCard';
 import HighlightsCard from '../components/HighlightsCard';
 import PagedList from '../components/PagedList';
 import News from '../models/News';
+import { useTheme } from '../models/Themes';
+import { color } from 'react-native-reanimated';
 
 type Props = {
 	navigation: BottomTabNavigationProp<ParamListBase, 'Home'>;
 };
 
 const HomeScreen: FC<Props> = ({ navigation }) => {
+	const { colors } = useTheme();
 	const [recents, fetchRecents] = useRecents('in');
 
 	const renderHighlight = ({ item, index }: ListRenderItemInfo<News>) => {
@@ -51,13 +54,18 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
 					}}
 					firstPage={1}
 				/>
-				<Text style={styles.titleStyle}>Recent News</Text>
+				<Text
+					style={[
+						styles.titleStyle,
+						{ color: colors.secondaryText }
+					]}>
+					Recent News
+				</Text>
 			</>
 		);
 	};
 
 	useEffect(() => {
-		console.log('called useEffect');
 		fetchRecents();
 	}, []);
 
@@ -74,7 +82,6 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
 	titleStyle: {
-		color: 'gray',
 		marginLeft: 20,
 		marginTop: 15,
 		marginBottom: 15,

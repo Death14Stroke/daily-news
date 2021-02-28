@@ -1,12 +1,7 @@
 import React from 'react';
-import { ColorValue, StatusBar, TouchableOpacity } from 'react-native';
+import { StatusBar, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {
-	NavigationContainer,
-	DefaultTheme,
-	DarkTheme,
-	Theme
-} from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -17,13 +12,10 @@ import {
 	Roboto_500Medium
 } from '@expo-google-fonts/roboto';
 import AppLoading from 'expo-app-loading';
-import {
-	AppearanceProvider,
-	ColorSchemeName,
-	useColorScheme
-} from 'react-native-appearance';
+import { AppearanceProvider } from 'react-native-appearance';
 import { Provider as SourceProvider } from './src/context/SourceContext';
 import { Provider as BookmarkProvider } from './src/context/BookmarkContext';
+import { Provider as PreferenceProvider } from './src/context/PreferenceContext';
 import SplashScreen from './src/screens/SplashScreen';
 import DiscoverScreen from './src/screens/DiscoverScreen';
 import BookmarksScreen from './src/screens/BookmarksScreen';
@@ -31,12 +23,7 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import Colors from './colors';
 import HomeScreen from './src/screens/HomeScreen';
 import CategoryNewsScreen from './src/screens/CategoryNewsScreen';
-import {
-	AppTheme,
-	CustomDarkTheme,
-	CustomDefaultTheme,
-	CustomTheme
-} from './src/models/Themes';
+import { useSystemTheme, useTheme } from './src/models/Themes';
 import DetailsScreen from './src/screens/DetailsScreen';
 import SearchScreen from './src/screens/SearchScreen';
 
@@ -104,8 +91,12 @@ const bottomTabs = () => {
 			<BottomTab.Screen
 				name='Home'
 				options={{
-					tabBarIcon: ({ color, size }) => (
-						<Ionicons name='home-sharp' size={size} color={color} />
+					tabBarIcon: ({ color, size, focused }) => (
+						<Ionicons
+							name={focused ? 'home-sharp' : 'home-outline'}
+							size={size}
+							color={color}
+						/>
 					)
 				}}>
 				{topTabs}
@@ -114,9 +105,9 @@ const bottomTabs = () => {
 				name='Discover'
 				component={DiscoverScreen}
 				options={{
-					tabBarIcon: ({ color, size }) => (
+					tabBarIcon: ({ color, size, focused }) => (
 						<Ionicons
-							name='globe-outline'
+							name={focused ? 'globe-sharp' : 'globe-outline'}
 							size={size}
 							color={color}
 						/>
@@ -127,9 +118,9 @@ const bottomTabs = () => {
 				name='Bookmarks'
 				component={BookmarksScreen}
 				options={{
-					tabBarIcon: ({ color, size }) => (
+					tabBarIcon: ({ color, size, focused }) => (
 						<Ionicons
-							name='bookmark-outline'
+							name={focused ? 'bookmark' : 'bookmark-outline'}
 							size={size}
 							color={color}
 						/>
@@ -140,9 +131,9 @@ const bottomTabs = () => {
 				name='Settings'
 				component={SettingsScreen}
 				options={{
-					tabBarIcon: ({ color, size }) => (
+					tabBarIcon: ({ color, size, focused }) => (
 						<Ionicons
-							name='settings-outline'
+							name={focused ? 'settings' : 'settings-outline'}
 							size={size}
 							color={color}
 						/>
@@ -153,25 +144,21 @@ const bottomTabs = () => {
 	);
 };
 
-const getStylesFromTheme = (scheme: ColorSchemeName): AppTheme => {
-	if (scheme === 'dark') {
-		return {
-			theme: CustomDarkTheme,
-			barStyle: 'light-content',
-			backgroundColor: Colors.shark
-		};
-	} else {
-		return {
-			theme: CustomDefaultTheme,
-			barStyle: 'dark-content',
-			backgroundColor: 'white'
-		};
-	}
+const homeScreenMenu = () => {
+	const { colors } = useTheme();
+	const navigation = useNavigation();
+
+	return (
+		<TouchableOpacity
+			style={{ marginRight: 10 }}
+			onPress={() => navigation.navigate('Search')}>
+			<Ionicons name='search' size={24} color={colors.text} />
+		</TouchableOpacity>
+	);
 };
 
 const App = () => {
-	const scheme = useColorScheme();
-	const { theme, barStyle, backgroundColor } = getStylesFromTheme(scheme);
+	const { theme, barStyle, backgroundColor } = useSystemTheme();
 
 	let [fontsLoaded] = useFonts({
 		Roboto_300Light,
@@ -185,51 +172,39 @@ const App = () => {
 
 	return (
 		<AppearanceProvider>
-			<SourceProvider>
-				<BookmarkProvider>
-					<SplashScreen>
-						<NavigationContainer theme={theme}>
-							<StatusBar
-								barStyle={barStyle}
-								backgroundColor={backgroundColor}
-							/>
-							<Stack.Navigator>
-								<Stack.Screen
-									name='HomeTabs'
-									options={({ navigation }) => ({
-										headerRight: () => (
-											<TouchableOpacity
-												style={{ marginRight: 10 }}
-												onPress={() =>
-													navigation.navigate(
-														'Search'
-													)
-												}>
-												<Ionicons
-													name='search'
-													size={24}
-													color='black'
-												/>
-											</TouchableOpacity>
-										),
-										headerStyle: { elevation: 0 }
-									})}>
-									{bottomTabs}
-								</Stack.Screen>
-								<Stack.Screen
-									name='Details'
-									component={DetailsScreen}
-									options={{ headerShown: false }}
+			<PreferenceProvider>
+				<SourceProvider>
+					<BookmarkProvider>
+						<SplashScreen>
+							<NavigationContainer theme={theme}>
+								<StatusBar
+									barStyle={barStyle}
+									backgroundColor={backgroundColor}
 								/>
-								<Stack.Screen
-									name='Search'
-									component={SearchScreen}
-								/>
-							</Stack.Navigator>
-						</NavigationContainer>
-					</SplashScreen>
-				</BookmarkProvider>
-			</SourceProvider>
+								<Stack.Navigator>
+									<Stack.Screen
+										name='HomeTabs'
+										options={() => ({
+											headerRight: homeScreenMenu,
+											headerStyle: { elevation: 0 }
+										})}>
+										{bottomTabs}
+									</Stack.Screen>
+									<Stack.Screen
+										name='Details'
+										component={DetailsScreen}
+										options={{ headerShown: false }}
+									/>
+									<Stack.Screen
+										name='Search'
+										component={SearchScreen}
+									/>
+								</Stack.Navigator>
+							</NavigationContainer>
+						</SplashScreen>
+					</BookmarkProvider>
+				</SourceProvider>
+			</PreferenceProvider>
 		</AppearanceProvider>
 	);
 };

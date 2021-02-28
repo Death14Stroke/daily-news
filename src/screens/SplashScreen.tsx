@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import AppLoading from 'expo-app-loading';
 import { Context as SourceContext } from '../context/SourceContext';
 
-const SplashScreen = ({ children }) => {
+const SplashScreen: FC = ({ children }) => {
 	const [loading, setIsLoading] = useState(true);
 	const { fetchSources } = useContext(SourceContext);
 
 	useEffect(() => {
-		fetchSources({ country: 'in', language: 'en' }, () => {
+		fetchSources('in', 'en', () => {
 			setIsLoading(false);
 		});
 	}, []);
@@ -16,7 +16,7 @@ const SplashScreen = ({ children }) => {
 		return <AppLoading />;
 	}
 
-	return children;
+	return <>{children}</>;
 };
 
 export default SplashScreen;

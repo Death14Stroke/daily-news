@@ -1,23 +1,44 @@
-import React, { memo } from 'react';
+import React, { FC, memo } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-elements';
-import Colors from '../../colors';
+import { useTheme } from '../models/Themes';
+import News from '../models/News';
 
-const RecentNewsCard = ({ title, category, imageUri, onPress }) => {
+interface Props {
+	news: News;
+	onPress: () => void;
+}
+
+const NewsCard: FC<Props> = ({
+	news: { title, category, urlToImage },
+	onPress
+}) => {
+	const { colors } = useTheme();
+
 	return (
-		<Card containerStyle={styles.cardContainer}>
+		<Card
+			containerStyle={[
+				styles.cardContainer,
+				{ backgroundColor: colors.cardBackground }
+			]}>
 			<TouchableOpacity onPress={onPress}>
 				<View style={{ flexDirection: 'row' }}>
 					<View style={styles.imageContainer}>
 						<Image
-							source={{ uri: imageUri }}
+							source={{ uri: urlToImage }}
 							style={styles.image}
 						/>
 					</View>
 					<View style={styles.textContainer}>
-						<Text style={styles.category}>{category}</Text>
 						<Text
-							style={styles.title}
+							style={[
+								styles.category,
+								{ color: colors.subtitleColor }
+							]}>
+							{category}
+						</Text>
+						<Text
+							style={[styles.title, { color: colors.text }]}
 							numberOfLines={3}
 							ellipsizeMode='tail'>
 							{title}
@@ -54,7 +75,6 @@ const styles = StyleSheet.create({
 		padding: 15
 	},
 	category: {
-		color: Colors.cinnabar,
 		position: 'absolute',
 		padding: 15,
 		fontFamily: 'Roboto_500Medium'
@@ -67,11 +87,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const arePropsEqual = (prevProps, nextProps) => {
+const arePropsEqual = (prevProps: Props, nextProps: Props) => {
 	return (
-		prevProps.title === nextProps.title &&
-		prevProps.category === nextProps.category
+		prevProps.news.url === nextProps.news.url &&
+		prevProps.news.category === nextProps.news.category
 	);
 };
 
-export default memo(RecentNewsCard, arePropsEqual);
+export default memo(NewsCard, arePropsEqual);

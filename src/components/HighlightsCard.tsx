@@ -1,17 +1,32 @@
-import React, { memo } from 'react';
+import React, { FC, memo } from 'react';
 import {
 	View,
 	Text,
 	ImageBackground,
 	TouchableOpacity,
-	StyleSheet
+	StyleSheet,
+	ViewStyle
 } from 'react-native';
+import { format } from 'date-fns';
+import News from '../models/News';
 
-const NewsCard = ({ title, date, imageUri, cardStyle, onPress }) => {
+interface Props {
+	news: News;
+	onPress: () => void;
+	cardStyle: ViewStyle;
+}
+
+const HighlightsCard: FC<Props> = ({
+	news: { title, publishedAt, urlToImage },
+	cardStyle,
+	onPress
+}) => {
+	const date = format(new Date(publishedAt), 'MMMM dd, yyyy');
+
 	return (
 		<TouchableOpacity onPress={onPress}>
 			<ImageBackground
-				source={{ uri: imageUri }}
+				source={{ uri: urlToImage }}
 				style={[styles.image, cardStyle]}>
 				<View style={styles.textContainer}>
 					<Text
@@ -26,7 +41,6 @@ const NewsCard = ({ title, date, imageUri, cardStyle, onPress }) => {
 		</TouchableOpacity>
 	);
 };
-
 const styles = StyleSheet.create({
 	image: {
 		width: 275,
@@ -57,8 +71,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-const arePropsEqual = (prevProps, nextProps) => {
-	return prevProps.title === nextProps.title;
+const arePropsEqual = (prevProps: Props, nextProps: Props) => {
+	return prevProps.news.url === nextProps.news.url;
 };
 
-export default memo(NewsCard, arePropsEqual);
+export default memo(HighlightsCard, arePropsEqual);

@@ -1,28 +1,33 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Text, FlatList, StyleSheet } from 'react-native';
+import React, { FC, useContext, useEffect, useState } from 'react';
+import { Text, FlatList, StyleSheet, ListRenderItemInfo } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { format } from 'date-fns';
 import { Context as SourceContext } from '../context/SourceContext';
 import PagedList from '../components/PagedList';
-import NewsCard from '../components/NewsCard';
 import { fetchHighlights } from '../hooks/NewsApi';
 import SourceCard from '../components/SourceCard';
+import Source from '../models/Source';
+import HighlightsCard from '../components/HighlightsCard';
+import News from '../models/News';
 
-const CategoryNewsScreen = ({ category }) => {
+interface Props {
+	category: string;
+}
+
+const CategoryNewsScreen: FC<Props> = ({ category }) => {
 	const navigation = useNavigation();
 	const { state } = useContext(SourceContext);
 	const [sources, setSources] = useState([]);
 
 	useEffect(() => {
-		setSources(state.filter(source => source.category === category));
+		setSources(
+			state.filter((source: Source) => source.category === category)
+		);
 	}, []);
 
-	const renderHighlight = ({ item, index }) => {
+	const renderHighlight = ({ item, index }: ListRenderItemInfo<News>) => {
 		return (
-			<NewsCard
-				title={item.title}
-				date={format(new Date(item.publishedAt), 'MMMM dd, yyyy')}
-				imageUri={item.urlToImage}
+			<HighlightsCard
+				news={item}
 				cardStyle={index === 0 ? { marginLeft: 20 } : { marginLeft: 0 }}
 				onPress={() => {
 					navigation.navigate('Details', { news: item });
@@ -31,7 +36,7 @@ const CategoryNewsScreen = ({ category }) => {
 		);
 	};
 
-	const renderSource = ({ item }) => {
+	const renderSource = ({ item }: ListRenderItemInfo<Source>) => {
 		return (
 			<SourceCard
 				source={item}
@@ -42,32 +47,30 @@ const CategoryNewsScreen = ({ category }) => {
 		);
 	};
 
+	const renderHighlightsList = () => {
+		return (
+			<>
+				<PagedList
+					keyExtractor={(news: News) => news.url + Math.random()}
+					renderItem={renderHighlight}
+					horizontal
+					loadData={(page: number) => {
+						return fetchHighlights('in', page, category);
+					}}
+					firstPage={1}
+				/>
+				<Text style={styles.titleStyle}>Top sources</Text>
+			</>
+		);
+	};
+
 	return (
 		<FlatList
 			style={{ marginTop: 10 }}
 			data={sources}
 			keyExtractor={source => source.id}
 			renderItem={renderSource}
-			ListHeaderComponent={() => {
-				return (
-					<>
-						<PagedList
-							keyExtractor={news => news.url + Math.random()}
-							renderItem={renderHighlight}
-							horizontal
-							loadData={page => {
-								return fetchHighlights({
-									country: 'in',
-									category,
-									page
-								});
-							}}
-							firstPage={1}
-						/>
-						<Text style={styles.titleStyle}>Top sources</Text>
-					</>
-				);
-			}}
+			ListHeaderComponent={renderHighlightsList}
 		/>
 	);
 };

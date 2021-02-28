@@ -1,14 +1,21 @@
 import { useState } from 'react';
 import news from '../api/news';
+import News from '../models/News';
 
-export const fetchHighlights = async ({ country, page, category = null }) => {
+const PAGE_SIZE = 10;
+
+export const fetchHighlights = async (
+	country: string,
+	page: number,
+	category?: string
+): Promise<News[]> => {
 	try {
 		let { data } = await news.get('/highlights', {
 			params: {
 				country,
 				category,
 				page,
-				pageSize: 10
+				pageSize: PAGE_SIZE
 			}
 		});
 		return data.articles;
@@ -18,17 +25,20 @@ export const fetchHighlights = async ({ country, page, category = null }) => {
 	}
 };
 
-export const searchArticles = async ({ query, language, page }) => {
+export const searchArticles = async (
+	query: string,
+	language: string,
+	page: number
+): Promise<News[]> => {
 	try {
 		let { data } = await news.get('/search', {
 			params: {
 				query,
 				language,
 				page,
-				pageSize: 10
+				pageSize: PAGE_SIZE
 			}
 		});
-		//console.log('articles:', data.articles);
 		return data.articles;
 	} catch (err) {
 		console.log(err);
@@ -36,7 +46,11 @@ export const searchArticles = async ({ query, language, page }) => {
 	}
 };
 
-export const useSources = ({ country, category, language }) => {
+export const useSources = (
+	country: string,
+	category: string,
+	language: string
+) => {
 	const [sources, setSources] = useState([]);
 
 	const fetchSources = async () => {
@@ -57,7 +71,7 @@ export const useSources = ({ country, category, language }) => {
 	return [sources, fetchSources];
 };
 
-export const useRecents = ({ country }) => {
+export const useRecents = (country: string): [News[], () => Promise<void>] => {
 	const [recents, setRecents] = useState([]);
 
 	const fetchRecents = async () => {
@@ -74,14 +88,4 @@ export const useRecents = ({ country }) => {
 	};
 
 	return [recents, fetchRecents];
-};
-
-export const useCategories = async () => {
-	try {
-		let response = await news.get('/categoeries');
-		return response.categories;
-	} catch (err) {
-		console.log(err);
-		return [];
-	}
 };

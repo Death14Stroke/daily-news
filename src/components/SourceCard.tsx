@@ -1,23 +1,38 @@
-import React, { memo } from 'react';
+import React, { FC, memo } from 'react';
 import {
 	View,
 	Text,
 	TouchableOpacity,
 	StyleSheet,
-	Linking
+	Linking,
+	ViewStyle
 } from 'react-native';
 import { Avatar, Card } from 'react-native-elements';
+import Source from '../models/Source';
+import { useTheme } from '../models/Themes';
 
-const SourceCard = ({
-	source,
+interface Props {
+	source: Source;
+	style: ViewStyle | ViewStyle[];
+	imageContainerStyle: ViewStyle;
+	textContainerStyle: ViewStyle;
+}
+
+const SourceCard: FC<Props> = ({
+	source: { name, description, url },
 	style,
 	imageContainerStyle,
 	textContainerStyle
 }) => {
-	const { name, description, url } = source;
+	const { colors } = useTheme();
 
 	return (
-		<Card containerStyle={[styles.cardContainer, style]}>
+		<Card
+			containerStyle={[
+				styles.cardContainer,
+				style,
+				{ backgroundColor: colors.cardBackground }
+			]}>
 			<TouchableOpacity onPress={() => Linking.openURL(url)}>
 				<View style={{ flexDirection: 'row', height: '100%' }}>
 					<View style={[styles.imageContainer, imageContainerStyle]}>
@@ -30,9 +45,15 @@ const SourceCard = ({
 						/>
 					</View>
 					<View style={[styles.textContainer, textContainerStyle]}>
-						<Text style={styles.name}>{name}</Text>
 						<Text
-							style={styles.description}
+							style={[
+								styles.name,
+								{ color: colors.subtitleColor }
+							]}>
+							{name}
+						</Text>
+						<Text
+							style={[styles.description, { color: colors.text }]}
 							numberOfLines={4}
 							ellipsizeMode='tail'>
 							{description}
@@ -62,7 +83,6 @@ const styles = StyleSheet.create({
 		paddingStart: 5
 	},
 	name: {
-		color: Colors.cinnabar,
 		fontFamily: 'Roboto_500Medium',
 		fontSize: 18
 	},
@@ -74,7 +94,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const arePropsEqual = (prevProps, nextProps) => {
+const arePropsEqual = (prevProps: Props, nextProps: Props) => {
 	return prevProps.source.id === nextProps.source.id;
 };
 

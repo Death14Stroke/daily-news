@@ -1,29 +1,37 @@
-import React, { useContext } from 'react';
-import { Text, FlatList, View, StyleSheet, Dimensions } from 'react-native';
+import React, { FC, useContext } from 'react';
+import {
+	Text,
+	FlatList,
+	View,
+	StyleSheet,
+	Dimensions,
+	ListRenderItemInfo
+} from 'react-native';
 import { Context as SourceContext } from '../context/SourceContext';
 import SourceCard from '../components/SourceCard';
+import Source from '../models/Source';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const categories = [
+	'business',
+	'entertainment',
+	'general',
+	'health',
+	'science',
+	'sports',
+	'technology'
+];
 
-const DiscoverScreen = () => {
+const DiscoverScreen: FC = () => {
 	const { state } = useContext(SourceContext);
-	const categories = [
-		'business',
-		'entertainment',
-		'general',
-		'health',
-		'science',
-		'sports',
-		'technology'
-	];
 	const sections = categories.map(category => {
 		return {
 			title: category,
-			data: state.filter(news => news.category === category)
+			data: state.filter((source: Source) => source.category === category)
 		};
 	});
 
-	const renderSource = ({ item, index }) => {
+	const renderSource = ({ item, index }: ListRenderItemInfo<Source>) => {
 		return (
 			<SourceCard
 				source={item}
@@ -37,12 +45,14 @@ const DiscoverScreen = () => {
 		);
 	};
 
-	const renderCategorySources = ({ item }) => {
+	const renderCategorySources = ({ item }: ListRenderItemInfo<string>) => {
 		return (
 			<View>
 				<Text style={styles.titleStyle}>Top sources in {item}</Text>
 				<FlatList
-					data={state.filter(source => source.category === item)}
+					data={state.filter(
+						(source: Source) => source.category === item
+					)}
 					renderItem={renderSource}
 					keyExtractor={source => source.id}
 					horizontal

@@ -1,7 +1,27 @@
-import React, { useEffect, useReducer } from 'react';
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import React, { FC, PropsWithChildren, useEffect, useReducer } from 'react';
+import { ListRenderItem } from 'react-native';
+import { View, FlatList, ActivityIndicator, FlatListProps } from 'react-native';
 
-const getInitialState = firstPage => {
+type State = {
+	loading: boolean;
+	data: any[];
+	page: number;
+	isListEnd: boolean;
+};
+type Action = {
+	type: 'data_loading' | 'page_loaded' | 'list_end_reached';
+	payload?: any;
+};
+
+interface Props<T> {
+	keyExtractor: (item: T, index: number) => string;
+	renderItem: ListRenderItem<T> | null | undefined;
+	horizontal?: boolean | null;
+	firstPage: number;
+	loadData: (page: number) => Promise<T[]>;
+}
+
+const getInitialState = (firstPage: number): State => {
 	return {
 		loading: false,
 		data: [],
@@ -10,7 +30,7 @@ const getInitialState = firstPage => {
 	};
 };
 
-const pagingReducer = (state, action) => {
+const pagingReducer = (state: State, action: Action) => {
 	switch (action.type) {
 		case 'data_loading':
 			return { ...state, loading: true };
@@ -28,13 +48,13 @@ const pagingReducer = (state, action) => {
 	}
 };
 
-const PagedList = ({
+const PagedList = <T extends any>({
 	keyExtractor,
 	renderItem,
 	horizontal = false,
 	loadData,
 	firstPage = 0
-}) => {
+}: PropsWithChildren<Props<T>>) => {
 	const [state, dispatch] = useReducer(
 		pagingReducer,
 		getInitialState(firstPage)
@@ -77,8 +97,6 @@ const PagedList = ({
 	useEffect(() => {
 		getData();
 	}, []);
-
-	console.log('data:', data.length);
 
 	return (
 		<FlatList

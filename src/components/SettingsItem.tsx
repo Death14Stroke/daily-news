@@ -1,8 +1,8 @@
-import React, { FC, ReactNode, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Overlay } from 'react-native-elements';
-import { Feather } from '@expo/vector-icons';
-import ModalSelector from 'react-native-modal-selector';
+import React, { FC, ReactNode, useContext, useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { Switch } from 'react-native-switch';
+import { useTheme } from '../models/Themes';
+import { Context as PreferenceContext } from '../context/PreferenceContext';
 
 type Props = {
 	label: string;
@@ -21,35 +21,58 @@ const prepareLanguageSelectionList = () => {
 const data = prepareLanguageSelectionList();
 
 const SettingsItem: FC<Props> = ({ label, icon }) => {
+	const { colors } = useTheme();
+	const {
+		state: { scheme },
+		updateDarkMode
+	} = useContext(PreferenceContext);
+
+	const toggleDark = () => {
+		if (scheme === 'light') {
+			updateDarkMode('dark');
+		} else {
+			updateDarkMode('light');
+		}
+	};
+
 	return (
 		<View style={styles.rowStyle}>
 			<View style={{ flexDirection: 'row' }}>
 				<View style={styles.iconContainerStyle}>{icon()}</View>
-				<Text style={styles.titleStyle}>{label}</Text>
+				<Text
+					style={[
+						styles.titleStyle,
+						{ color: colors.secondaryText }
+					]}>
+					{label}
+				</Text>
 			</View>
 			<View style={{ flexDirection: 'row' }}>
-				<ModalSelector
-					data={data}
-					initValue='Select something yummy!'
-					scrollViewAccessibilityLabel={'Scrollable options'}
-					animationType='fade'
-					cancelButtonAccessibilityLabel={'Cancel Button'}
-					onChange={option => {
-						alert(`${option.label} (${option.key}) nom nom nom`);
-					}}>
-					<Text>English</Text>
-				</ModalSelector>
-				<Feather
-					style={{ alignSelf: 'center' }}
-					name='chevron-right'
-					size={24}
-					color='gray'
+				<Switch
+					value={scheme === 'dark'}
+					onValueChange={toggleDark}
+					disabled={false}
+					circleSize={25}
+					barHeight={30}
+					circleBorderWidth={0}
+					backgroundActive={colors.primary}
+					backgroundInactive={'gray'}
+					circleActiveColor='white'
+					circleInActiveColor='white'
+					changeValueImmediately={true}
+					innerCircleStyle={{
+						alignItems: 'center',
+						justifyContent: 'center'
+					}}
+					outerCircleStyle={{}}
+					renderActiveText={false}
+					renderInActiveText={false}
+					switchLeftPx={3}
+					switchRightPx={3}
+					switchWidthMultiplier={2}
+					switchBorderRadius={30}
 				/>
 			</View>
-
-			{/* <Overlay isVisible={showModal} onBackdropPress={toggleModal}>
-				<Text>Hello</Text>
-			</Overlay> */}
 		</View>
 	);
 };
@@ -67,11 +90,11 @@ const styles = StyleSheet.create({
 	},
 	titleStyle: {
 		alignSelf: 'center',
-		marginStart: 20
+		marginStart: 20,
+		fontFamily: 'Roboto_400Regular'
 	},
 	modalSelectionStyle: {
 		color: 'gray',
-
 		marginEnd: 10,
 		fontSize: 12
 	}

@@ -59,6 +59,7 @@ const PagedList = <T extends any>({
 		pagingReducer,
 		getInitialState(firstPage)
 	);
+
 	const { loading, data, page, isListEnd } = state;
 
 	const getData = async () => {

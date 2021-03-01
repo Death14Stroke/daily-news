@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StatusBar, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
@@ -16,6 +16,7 @@ import { AppearanceProvider } from 'react-native-appearance';
 import { Provider as SourceProvider } from './src/context/SourceContext';
 import { Provider as BookmarkProvider } from './src/context/BookmarkContext';
 import { Provider as PreferenceProvider } from './src/context/PreferenceContext';
+import { Context as PreferenceContext } from './src/context/PreferenceContext';
 import SplashScreen from './src/screens/SplashScreen';
 import DiscoverScreen from './src/screens/DiscoverScreen';
 import BookmarksScreen from './src/screens/BookmarksScreen';
@@ -158,8 +159,6 @@ const homeScreenMenu = () => {
 };
 
 const App = () => {
-	const { theme, barStyle, backgroundColor } = useSystemTheme();
-
 	let [fontsLoaded] = useFonts({
 		Roboto_300Light,
 		Roboto_400Regular,
@@ -173,37 +172,56 @@ const App = () => {
 	return (
 		<AppearanceProvider>
 			<PreferenceProvider>
-				<SourceProvider>
-					<BookmarkProvider>
-						<SplashScreen>
-							<NavigationContainer theme={theme}>
-								<StatusBar
-									barStyle={barStyle}
-									backgroundColor={backgroundColor}
-								/>
-								<Stack.Navigator>
-									<Stack.Screen
-										name='HomeTabs'
-										options={() => ({
-											headerRight: homeScreenMenu,
-											headerStyle: { elevation: 0 }
-										})}>
-										{bottomTabs}
-									</Stack.Screen>
-									<Stack.Screen
-										name='Details'
-										component={DetailsScreen}
-										options={{ headerShown: false }}
-									/>
-									<Stack.Screen
-										name='Search'
-										component={SearchScreen}
-									/>
-								</Stack.Navigator>
-							</NavigationContainer>
-						</SplashScreen>
-					</BookmarkProvider>
-				</SourceProvider>
+				<PreferenceContext.Consumer>
+					{context => {
+						const scheme = context.state.scheme;
+						const {
+							theme,
+							barStyle,
+							backgroundColor
+						} = useSystemTheme(scheme);
+						console.log(context.state.scheme);
+						return (
+							<SourceProvider>
+								<BookmarkProvider>
+									<SplashScreen>
+										<NavigationContainer theme={theme}>
+											<StatusBar
+												barStyle={barStyle}
+												backgroundColor={
+													backgroundColor
+												}
+											/>
+											<Stack.Navigator>
+												<Stack.Screen
+													name='HomeTabs'
+													options={() => ({
+														headerRight: homeScreenMenu,
+														headerStyle: {
+															elevation: 0
+														}
+													})}>
+													{bottomTabs}
+												</Stack.Screen>
+												<Stack.Screen
+													name='Details'
+													component={DetailsScreen}
+													options={{
+														headerShown: false
+													}}
+												/>
+												<Stack.Screen
+													name='Search'
+													component={SearchScreen}
+												/>
+											</Stack.Navigator>
+										</NavigationContainer>
+									</SplashScreen>
+								</BookmarkProvider>
+							</SourceProvider>
+						);
+					}}
+				</PreferenceContext.Consumer>
 			</PreferenceProvider>
 		</AppearanceProvider>
 	);

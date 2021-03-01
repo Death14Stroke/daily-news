@@ -1,16 +1,16 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import SettingsItem from '../components/SettingsItem';
 
 const SettingsScreen = () => {
 	return (
 		<View style={{ margin: 20 }}>
-			<Text style={styles.preferenceTitle}>Summary</Text>
+			<Text style={styles.preferenceTitle}>Preferences</Text>
 			<SettingsItem
-				label='Language'
+				label='Dark mode'
 				icon={() => (
-					<MaterialIcons name='language' size={24} color='gray' />
+					<Ionicons name='moon-outline' size={24} color='gray' />
 				)}
 			/>
 		</View>
@@ -20,7 +20,9 @@ const SettingsScreen = () => {
 const styles = StyleSheet.create({
 	preferenceTitle: {
 		color: 'gray',
-		fontFamily: 'Roboto_500Medium'
+		fontFamily: 'Roboto_500Medium',
+		marginBottom: 10,
+		fontSize: 16
 	}
 });
 

@@ -1,8 +1,15 @@
+import React, {
+	createContext,
+	Dispatch,
+	FC,
+	useEffect,
+	useReducer
+} from 'react';
+import { ColorSchemeName } from 'react-native-appearance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createContext, Dispatch, FC, useEffect, useReducer } from 'react';
 
-interface Preferences {
-	darkMode: boolean;
+export interface Preferences {
+	scheme: ColorSchemeName;
 }
 type Action = {
 	type: 'init_preferences' | 'update_dark_mode';
@@ -11,7 +18,7 @@ type Action = {
 type DispatchAction = (dispatch: Dispatch<Action>) => any;
 
 const INITIAL_STATE: Preferences = {
-	darkMode: false
+	scheme: 'light'
 };
 
 const preferenceReducer = (state: Preferences, action: Action): Preferences => {
@@ -19,14 +26,16 @@ const preferenceReducer = (state: Preferences, action: Action): Preferences => {
 		case 'init_preferences':
 			return action.payload;
 		case 'update_dark_mode':
-			return { ...state, darkMode: action.payload };
+			return { ...state, scheme: action.payload };
 		default:
 			return state;
 	}
 };
 
-const updateDarkMode = (dispatch: Dispatch<Action>) => (darkMode: boolean) => {
-	dispatch({ type: 'update_dark_mode', payload: darkMode });
+const updateDarkMode = (dispatch: Dispatch<Action>) => (
+	scheme: ColorSchemeName
+) => {
+	dispatch({ type: 'update_dark_mode', payload: scheme });
 };
 
 const createPreferenceContext = () => {

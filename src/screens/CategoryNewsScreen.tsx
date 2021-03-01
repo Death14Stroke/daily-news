@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { Text, FlatList, StyleSheet, ListRenderItemInfo } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Context as SourceContext } from '../context/SourceContext';

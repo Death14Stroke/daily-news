@@ -4,7 +4,7 @@ import {
 	Theme,
 	useTheme as useNavigationTheme
 } from '@react-navigation/native';
-import { useColorScheme } from 'react-native';
+import { ColorSchemeName, useColorScheme } from 'react-native';
 
 export interface AppTheme {
 	theme: CustomTheme;
@@ -17,6 +17,7 @@ export interface CustomTheme extends Theme {
 		secondaryText: string;
 		cardBackground: string;
 		subtitleColor: string;
+		btnback: string;
 	};
 }
 
@@ -32,6 +33,7 @@ export const CustomDefaultTheme: CustomTheme = {
 	colors: {
 		...DefaultTheme.colors,
 		primary: Colors.bayOfMany,
+		btnback: 'green',
 		secondaryText: 'gray',
 		cardBackground: Colors.zircon,
 		subtitleColor: Colors.cinnabar
@@ -45,7 +47,8 @@ export const CustomDarkTheme: CustomTheme = {
 		primary: Colors.cinnabar,
 		secondaryText: 'white',
 		cardBackground: Colors.shark,
-		subtitleColor: 'gray'
+		subtitleColor: 'gray',
+		btnback: Colors.cinnabar
 	}
 };
 
@@ -53,9 +56,7 @@ export const useTheme = () => {
 	return useNavigationTheme() as CustomTheme;
 };
 
-export const useSystemTheme = (): AppTheme => {
-	const scheme = useColorScheme();
-
+export const useSystemTheme = (scheme: ColorSchemeName): AppTheme => {
 	if (scheme === 'dark') {
 		return {
 			theme: CustomDarkTheme,

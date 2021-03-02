@@ -40,7 +40,8 @@ const SearchScreen: FC<Props> = ({ navigation }) => {
 			<View
 				style={{
 					flexDirection: 'row',
-					backgroundColor: colors.card
+					backgroundColor: colors.card,
+					marginTop: 30
 				}}>
 				<TouchableOpacity
 					style={styles.upArrowStyle}

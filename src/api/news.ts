@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-	baseURL: 'http://c4831824a664.ngrok.io'
+	baseURL: 'https://daily-news-express.herokuapp.com'
 });

@@ -187,6 +187,7 @@ const App = () => {
 									<SplashScreen>
 										<NavigationContainer theme={theme}>
 											<StatusBar
+												translucent
 												barStyle={barStyle}
 												backgroundColor={
 													backgroundColor

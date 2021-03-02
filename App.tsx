@@ -180,7 +180,7 @@ const App = () => {
 							barStyle,
 							backgroundColor
 						} = useSystemTheme(scheme);
-						console.log(context.state.scheme);
+
 						return (
 							<SourceProvider>
 								<BookmarkProvider>

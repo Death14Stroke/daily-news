@@ -4,7 +4,7 @@ import {
 	Theme,
 	useTheme as useNavigationTheme
 } from '@react-navigation/native';
-import { ColorSchemeName, useColorScheme } from 'react-native';
+import { ColorSchemeName } from 'react-native';
 
 export interface AppTheme {
 	theme: CustomTheme;

@@ -26,7 +26,7 @@ const BookmarksScreen: FC<Props> = ({ navigation }) => {
 
 	return (
 		<FlatList
-			style={{ marginTop: 10 }}
+			style={{ paddingTop: 10 }}
 			data={state}
 			keyExtractor={(news: News) => news.url}
 			renderItem={renderBookmark}

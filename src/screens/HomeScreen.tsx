@@ -70,7 +70,7 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
 
 	return (
 		<FlatList
-			style={{ marginTop: 10 }}
+			style={{ paddingTop: 10 }}
 			data={recents}
 			keyExtractor={news => news.url}
 			renderItem={renderRecent}

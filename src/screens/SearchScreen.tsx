@@ -1,5 +1,10 @@
 import React, { FC, useLayoutEffect, useState } from 'react';
-import { View, TouchableOpacity, ListRenderItemInfo } from 'react-native';
+import {
+	View,
+	TouchableOpacity,
+	ListRenderItemInfo,
+	StyleSheet
+} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -8,12 +13,14 @@ import { searchArticles } from '../hooks/NewsApi';
 import NewsCard from '../components/NewsCard';
 import PagedList from '../components/PagedList';
 import News from '../models/News';
+import { useTheme } from '../models/Themes';
 
 type Props = {
 	navigation: StackNavigationProp<ParamListBase, 'Search'>;
 };
 
 const SearchScreen: FC<Props> = ({ navigation }) => {
+	const { colors } = useTheme();
 	const [query, setQuery] = useState('');
 	const [finalQuery, setFinalQuery] = useState('');
 
@@ -33,12 +40,16 @@ const SearchScreen: FC<Props> = ({ navigation }) => {
 			<View
 				style={{
 					flexDirection: 'row',
-					backgroundColor: 'white'
+					backgroundColor: colors.card
 				}}>
 				<TouchableOpacity
-					style={{ alignSelf: 'center', marginStart: 10 }}
+					style={styles.upArrowStyle}
 					onPress={() => navigation.pop()}>
-					<Ionicons name='chevron-back' size={24} color='black' />
+					<Ionicons
+						name='chevron-back'
+						size={24}
+						color={colors.text}
+					/>
 				</TouchableOpacity>
 				<SearchBar
 					placeholder='Search'
@@ -47,14 +58,11 @@ const SearchScreen: FC<Props> = ({ navigation }) => {
 					onSubmitEditing={() => {
 						setFinalQuery(query);
 					}}
-					containerStyle={{
-						backgroundColor: 'white',
-						padding: 0,
-						borderTopColor: 'transparent',
-						borderBottomColor: 'transparent',
-						flex: 1
-					}}
-					inputContainerStyle={{ backgroundColor: 'white' }}
+					containerStyle={[
+						styles.searchContainerStyle,
+						{ backgroundColor: colors.card }
+					]}
+					inputContainerStyle={{ backgroundColor: colors.card }}
 				/>
 			</View>
 		);
@@ -91,5 +99,18 @@ const SearchScreen: FC<Props> = ({ navigation }) => {
 		/>
 	);
 };
+
+const styles = StyleSheet.create({
+	upArrowStyle: {
+		alignSelf: 'center',
+		marginStart: 10
+	},
+	searchContainerStyle: {
+		padding: 0,
+		borderTopColor: 'transparent',
+		borderBottomColor: 'transparent',
+		flex: 1
+	}
+});
 
 export default SearchScreen;

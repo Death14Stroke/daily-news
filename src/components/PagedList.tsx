@@ -1,6 +1,14 @@
 import React, { PropsWithChildren, useEffect, useReducer } from 'react';
-import { ListRenderItem, ViewStyle } from 'react-native';
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import {
+	View,
+	Text,
+	FlatList,
+	ActivityIndicator,
+	ListRenderItem,
+	ViewStyle,
+	StyleSheet
+} from 'react-native';
+import { useTheme } from '../models/Themes';
 
 type State = {
 	loading: boolean;
@@ -57,6 +65,7 @@ const PagedList = <T extends any>({
 	firstPage = 0,
 	style
 }: PropsWithChildren<Props<T>>) => {
+	const { colors } = useTheme();
 	const [state, dispatch] = useReducer(
 		pagingReducer,
 		getInitialState(firstPage)
@@ -72,7 +81,7 @@ const PagedList = <T extends any>({
 
 			try {
 				let results = await loadData(page);
-				console.log('getData: ', results.length);
+
 				if (results.length > 0) {
 					dispatch({ type: 'page_loaded', payload: results });
 				} else {
@@ -92,9 +101,21 @@ const PagedList = <T extends any>({
 					justifyContent: 'center',
 					flexDirection: 'column'
 				}}>
-				<ActivityIndicator color='black' style={{ margin: 15 }} />
+				<ActivityIndicator
+					color={colors.primary}
+					style={{ margin: 15 }}
+					size='large'
+				/>
 			</View>
 		) : null;
+	};
+
+	const renderEmptyView = () => {
+		return (
+			<Text style={[styles.emptyViewStyle, { color: colors.text }]}>
+				No news found
+			</Text>
+		);
 	};
 
 	useEffect(() => {
@@ -114,9 +135,28 @@ const PagedList = <T extends any>({
 			onEndReached={() => {
 				getData();
 			}}
+			contentContainerStyle={styles.contentContainerStyle}
 			ListFooterComponent={renderFooter}
+			ListEmptyComponent={() => {
+				if (data.length === 0 && !loading) {
+					return renderEmptyView();
+				}
+				return null;
+			}}
 		/>
 	);
 };
+
+const styles = StyleSheet.create({
+	contentContainerStyle: {
+		flexGrow: 1,
+		justifyContent: 'center'
+	},
+	emptyViewStyle: {
+		textAlign: 'center',
+		fontFamily: 'Roboto_500Medium',
+		fontSize: 22
+	}
+});
 
 export default PagedList;

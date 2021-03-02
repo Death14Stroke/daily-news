@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Text, StyleSheet, ListRenderItemInfo } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { ParamListBase } from '@react-navigation/native';
@@ -9,7 +9,6 @@ import HighlightsCard from '../components/HighlightsCard';
 import PagedList from '../components/PagedList';
 import News from '../models/News';
 import { useTheme } from '../models/Themes';
-import { color } from 'react-native-reanimated';
 
 type Props = {
 	navigation: BottomTabNavigationProp<ParamListBase, 'Home'>;
@@ -42,7 +41,7 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
 		);
 	};
 
-	const renderHighlightsList = () => {
+	const renderHighlightsList = useMemo(() => {
 		return (
 			<>
 				<PagedList
@@ -63,7 +62,7 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
 				</Text>
 			</>
 		);
-	};
+	}, []);
 
 	useEffect(() => {
 		fetchRecents();

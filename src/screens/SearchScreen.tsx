@@ -15,6 +15,7 @@ type Props = {
 
 const SearchScreen: FC<Props> = ({ navigation }) => {
 	const [query, setQuery] = useState('');
+	const [finalQuery, setFinalQuery] = useState('');
 
 	const fetchSearchResults = async (page: number) => {
 		if (query === '') {
@@ -44,7 +45,7 @@ const SearchScreen: FC<Props> = ({ navigation }) => {
 					onChangeText={setQuery}
 					value={query}
 					onSubmitEditing={() => {
-						fetchSearchResults(1);
+						setFinalQuery(query);
 					}}
 					containerStyle={{
 						backgroundColor: 'white',
@@ -78,13 +79,15 @@ const SearchScreen: FC<Props> = ({ navigation }) => {
 
 	return (
 		<PagedList
+			key={finalQuery}
 			keyExtractor={(news: News) => news.url}
 			renderItem={renderNewsCard}
 			loadData={page => {
 				return fetchSearchResults(page);
 			}}
 			firstPage={1}
-			horizontal
+			horizontal={false}
+			style={{ marginTop: 15 }}
 		/>
 	);
 };

@@ -35,7 +35,7 @@ const NewsCard: FC<Props> = ({
 								styles.category,
 								{ color: colors.subtitleColor }
 							]}>
-							{category}
+							{category || 'All'}
 						</Text>
 						<Text
 							style={[styles.title, { color: colors.text }]}

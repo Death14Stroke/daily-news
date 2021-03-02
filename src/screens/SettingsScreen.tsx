@@ -5,7 +5,7 @@ import SettingsItem from '../components/SettingsItem';
 
 const SettingsScreen = () => {
 	return (
-		<View style={{ margin: 20 }}>
+		<View style={{ margin: 15 }}>
 			<Text style={styles.preferenceTitle}>Preferences</Text>
 			<SettingsItem
 				label='Dark mode'
@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
 	preferenceTitle: {
 		color: 'gray',
 		fontFamily: 'Roboto_500Medium',
-		marginBottom: 10,
-		fontSize: 16
+		marginBottom: 20,
+		fontSize: 18
 	}
 });
 

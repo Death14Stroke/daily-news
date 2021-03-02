@@ -47,7 +47,7 @@ const CategoryNewsScreen: FC<Props> = ({ category }) => {
 		);
 	};
 
-	const renderHighlightsList = () => {
+	const renderHighlightsList = useMemo(() => {
 		return (
 			<>
 				<PagedList
@@ -62,7 +62,7 @@ const CategoryNewsScreen: FC<Props> = ({ category }) => {
 				<Text style={styles.titleStyle}>Top sources</Text>
 			</>
 		);
-	};
+	}, []);
 
 	return (
 		<FlatList

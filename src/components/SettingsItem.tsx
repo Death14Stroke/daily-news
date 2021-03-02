@@ -9,17 +9,6 @@ type Props = {
 	icon: () => ReactNode;
 };
 
-const prepareLanguageSelectionList = () => {
-	let i = 0;
-	return [
-		{ key: i++, label: 'en' },
-		{ key: i++, label: 'fr' },
-		{ key: i++, label: 'au' }
-	];
-};
-
-const data = prepareLanguageSelectionList();
-
 const SettingsItem: FC<Props> = ({ label, icon }) => {
 	const { colors } = useTheme();
 	const {
@@ -38,28 +27,27 @@ const SettingsItem: FC<Props> = ({ label, icon }) => {
 	return (
 		<View style={styles.rowStyle}>
 			<View style={{ flexDirection: 'row' }}>
-				<View style={styles.iconContainerStyle}>{icon()}</View>
-				<Text
+				<View
 					style={[
-						styles.titleStyle,
-						{ color: colors.secondaryText }
+						styles.iconContainerStyle,
+						{ borderWidth: scheme === 'dark' ? 1 : 0 }
 					]}>
-					{label}
-				</Text>
+					{icon()}
+				</View>
+				<Text style={styles.titleStyle}>{label}</Text>
 			</View>
 			<View style={{ flexDirection: 'row' }}>
 				<Switch
 					value={scheme === 'dark'}
 					onValueChange={toggleDark}
 					disabled={false}
-					circleSize={25}
+					circleSize={27}
 					barHeight={30}
 					circleBorderWidth={0}
 					backgroundActive={colors.primary}
 					backgroundInactive={'gray'}
 					circleActiveColor='white'
 					circleInActiveColor='white'
-					changeValueImmediately={true}
 					innerCircleStyle={{
 						alignItems: 'center',
 						justifyContent: 'center'
@@ -83,15 +71,17 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between'
 	},
 	iconContainerStyle: {
-		borderWidth: 2,
-		borderColor: 'gray',
+		borderRadius: 2,
+		borderColor: '#3d3d3d',
 		alignContent: 'center',
-		padding: 5
+		padding: 6
 	},
 	titleStyle: {
 		alignSelf: 'center',
 		marginStart: 20,
-		fontFamily: 'Roboto_400Regular'
+		fontFamily: 'Roboto_400Regular',
+		fontWeight: 'bold',
+		color: 'gray'
 	},
 	modalSelectionStyle: {
 		color: 'gray',

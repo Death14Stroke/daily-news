@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StatusBar, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
@@ -194,7 +194,7 @@ const App = () => {
 											/>
 											<Stack.Navigator>
 												<Stack.Screen
-													name='HomeTabs'
+													name='Daily News'
 													options={() => ({
 														headerRight: homeScreenMenu,
 														headerStyle: {

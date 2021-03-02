@@ -1,6 +1,6 @@
-import React, { FC, PropsWithChildren, useEffect, useReducer } from 'react';
-import { ListRenderItem } from 'react-native';
-import { View, FlatList, ActivityIndicator, FlatListProps } from 'react-native';
+import React, { PropsWithChildren, useEffect, useReducer } from 'react';
+import { ListRenderItem, ViewStyle } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 
 type State = {
 	loading: boolean;
@@ -19,6 +19,7 @@ interface Props<T> {
 	horizontal?: boolean | null;
 	firstPage: number;
 	loadData: (page: number) => Promise<T[]>;
+	style?: ViewStyle;
 }
 
 const getInitialState = (firstPage: number): State => {
@@ -53,7 +54,8 @@ const PagedList = <T extends any>({
 	renderItem,
 	horizontal = false,
 	loadData,
-	firstPage = 0
+	firstPage = 0,
+	style
 }: PropsWithChildren<Props<T>>) => {
 	const [state, dispatch] = useReducer(
 		pagingReducer,
@@ -101,6 +103,7 @@ const PagedList = <T extends any>({
 
 	return (
 		<FlatList
+			style={style}
 			data={data}
 			extraData={state}
 			keyExtractor={keyExtractor}

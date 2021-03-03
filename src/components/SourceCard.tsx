@@ -4,7 +4,6 @@ import {
 	Text,
 	TouchableOpacity,
 	StyleSheet,
-	Linking,
 	ViewStyle
 } from 'react-native';
 import { Avatar, Card } from 'react-native-elements';
@@ -16,13 +15,15 @@ interface Props {
 	style: ViewStyle | ViewStyle[];
 	imageContainerStyle: ViewStyle;
 	textContainerStyle: ViewStyle;
+	onPress: () => void;
 }
 
 const SourceCard: FC<Props> = ({
 	source: { name, description, url },
 	style,
 	imageContainerStyle,
-	textContainerStyle
+	textContainerStyle,
+	onPress
 }) => {
 	const { colors } = useTheme();
 
@@ -33,7 +34,7 @@ const SourceCard: FC<Props> = ({
 				style,
 				{ backgroundColor: colors.cardBackground }
 			]}>
-			<TouchableOpacity onPress={() => Linking.openURL(url)}>
+			<TouchableOpacity onPress={onPress}>
 				<View style={{ flexDirection: 'row', height: '100%' }}>
 					<View style={[styles.imageContainer, imageContainerStyle]}>
 						<Avatar

@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
 import {
 	Text,
 	FlatList,
@@ -7,6 +7,8 @@ import {
 	Dimensions,
 	ListRenderItemInfo
 } from 'react-native';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { ParamListBase } from '@react-navigation/native';
 import { Context as SourceContext } from '../context/SourceContext';
 import SourceCard from '../components/SourceCard';
 import Source from '../models/Source';
@@ -22,14 +24,20 @@ const categories = [
 	'technology'
 ];
 
-const DiscoverScreen: FC = () => {
+interface Props {
+	navigation: BottomTabNavigationProp<ParamListBase, 'Discover'>;
+}
+
+const DiscoverScreen: FC<Props> = ({ navigation }) => {
 	const { state } = useContext(SourceContext);
-	const sections = categories.map(category => {
-		return {
-			title: category,
-			data: state.filter((source: Source) => source.category === category)
-		};
-	});
+
+	const onSourceClick = useCallback(
+		(url: string) => {
+			console.log('webview navigate');
+			navigation.navigate('WebView', { url });
+		},
+		[navigation]
+	);
 
 	const renderSource = ({ item, index }: ListRenderItemInfo<Source>) => {
 		return (
@@ -41,6 +49,7 @@ const DiscoverScreen: FC = () => {
 				]}
 				imageContainerStyle={{ flex: 1 }}
 				textContainerStyle={{ flex: 4 }}
+				onPress={() => onSourceClick(item.url)}
 			/>
 		);
 	};

@@ -27,6 +27,8 @@ import CategoryNewsScreen from './src/screens/CategoryNewsScreen';
 import { useSystemTheme, useTheme } from './src/models/Themes';
 import DetailsScreen from './src/screens/DetailsScreen';
 import SearchScreen from './src/screens/SearchScreen';
+import WebViewScreen from './src/screens/WebViewScreen';
+import { hi } from 'date-fns/locale';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -158,6 +160,29 @@ const homeScreenMenu = () => {
 	);
 };
 
+const horizontalAnimation = {
+	cardStyleInterpolator: ({
+		current,
+		layouts
+	}: {
+		current: any;
+		layouts: any;
+	}) => {
+		return {
+			cardStyle: {
+				transform: [
+					{
+						translateX: current.progress.interpolate({
+							inputRange: [0, 1],
+							outputRange: [layouts.screen.width, 0]
+						})
+					}
+				]
+			}
+		};
+	}
+};
+
 const App = () => {
 	let [fontsLoaded] = useFonts({
 		Roboto_300Light,
@@ -208,12 +233,42 @@ const App = () => {
 													name='Details'
 													component={DetailsScreen}
 													options={{
-														headerShown: false
+														headerShown: false,
+														...horizontalAnimation,
+														gestureDirection:
+															'horizontal'
 													}}
 												/>
 												<Stack.Screen
 													name='Search'
 													component={SearchScreen}
+													options={{
+														...horizontalAnimation,
+														gestureDirection:
+															'horizontal'
+													}}
+												/>
+												<Stack.Screen
+													name='WebView'
+													component={WebViewScreen}
+													options={{
+														...horizontalAnimation,
+														gestureDirection:
+															'horizontal',
+														headerBackImage: ({
+															tintColor
+														}) => {
+															return (
+																<Ionicons
+																	name='chevron-back'
+																	size={24}
+																	color={
+																		tintColor
+																	}
+																/>
+															);
+														}
+													}}
 												/>
 											</Stack.Navigator>
 										</NavigationContainer>

@@ -43,6 +43,9 @@ const CategoryNewsScreen: FC<Props> = ({ category }) => {
 				style={{ marginHorizontal: 20, marginBottom: 20 }}
 				imageContainerStyle={{ flex: 1 }}
 				textContainerStyle={{ flex: 4 }}
+				onPress={() =>
+					navigation.navigate('WebView', { url: item.url })
+				}
 			/>
 		);
 	};

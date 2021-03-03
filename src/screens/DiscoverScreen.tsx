@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import {
 	Text,
 	FlatList,
@@ -12,6 +12,7 @@ import { ParamListBase } from '@react-navigation/native';
 import { Context as SourceContext } from '../context/SourceContext';
 import SourceCard from '../components/SourceCard';
 import Source from '../models/Source';
+import EmptyView from '../components/EmptyView';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const categories = [
@@ -31,13 +32,9 @@ interface Props {
 const DiscoverScreen: FC<Props> = ({ navigation }) => {
 	const { state } = useContext(SourceContext);
 
-	const onSourceClick = useCallback(
-		(url: string) => {
-			console.log('webview navigate');
-			navigation.navigate('WebView', { url });
-		},
-		[navigation]
-	);
+	const onSourceClick = (url: string) => {
+		navigation.navigate('WebView', { url });
+	};
 
 	const renderSource = ({ item, index }: ListRenderItemInfo<Source>) => {
 		return (
@@ -54,6 +51,17 @@ const DiscoverScreen: FC<Props> = ({ navigation }) => {
 		);
 	};
 
+	const renderEmptyView = () => {
+		return (
+			<View style={styles.emptyViewContainerStyle}>
+				<EmptyView
+					text='No sources available'
+					containerStyle={styles.emptyViewContainerStyle}
+				/>
+			</View>
+		);
+	};
+
 	const renderCategorySources = ({ item }: ListRenderItemInfo<string>) => {
 		return (
 			<View>
@@ -65,6 +73,7 @@ const DiscoverScreen: FC<Props> = ({ navigation }) => {
 					renderItem={renderSource}
 					keyExtractor={source => source.id}
 					horizontal
+					ListEmptyComponent={renderEmptyView}
 					showsHorizontalScrollIndicator={false}
 				/>
 			</View>
@@ -76,6 +85,7 @@ const DiscoverScreen: FC<Props> = ({ navigation }) => {
 			data={categories}
 			renderItem={renderCategorySources}
 			keyExtractor={category => category}
+			contentContainerStyle={{ flexGrow: 1 }}
 		/>
 	);
 };
@@ -92,6 +102,10 @@ const styles = StyleSheet.create({
 		marginTop: 15,
 		marginBottom: 15,
 		marginEnd: 20
+	},
+	emptyViewContainerStyle: {
+		width: SCREEN_WIDTH,
+		margin: 20
 	}
 });
 

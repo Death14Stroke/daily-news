@@ -8,6 +8,7 @@ import SourceCard from '../components/SourceCard';
 import Source from '../models/Source';
 import HighlightsCard from '../components/HighlightsCard';
 import News from '../models/News';
+import EmptyView from '../components/EmptyView';
 
 interface Props {
 	category: string;
@@ -23,6 +24,10 @@ const CategoryNewsScreen: FC<Props> = ({ category }) => {
 			state.filter((source: Source) => source.category === category)
 		);
 	}, []);
+
+	const renderEmptyView = () => {
+		return <EmptyView text='No sources' />;
+	};
 
 	const renderHighlight = ({ item, index }: ListRenderItemInfo<News>) => {
 		return (
@@ -54,7 +59,7 @@ const CategoryNewsScreen: FC<Props> = ({ category }) => {
 		return (
 			<>
 				<PagedList
-					keyExtractor={(news: News) => news.url + Math.random()}
+					keyExtractor={(news: News) => news.url}
 					renderItem={renderHighlight}
 					horizontal
 					loadData={(page: number) => {
@@ -74,6 +79,7 @@ const CategoryNewsScreen: FC<Props> = ({ category }) => {
 			keyExtractor={source => source.id}
 			renderItem={renderSource}
 			ListHeaderComponent={renderHighlightsList}
+			ListEmptyComponent={renderEmptyView}
 		/>
 	);
 };

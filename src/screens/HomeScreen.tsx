@@ -45,7 +45,7 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
 		return (
 			<>
 				<PagedList
-					keyExtractor={news => news.url + Math.random()}
+					keyExtractor={news => news.url}
 					renderItem={renderHighlight}
 					horizontal
 					loadData={page => {

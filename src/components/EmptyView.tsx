@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { useTheme } from '../models/Themes';
+import { useTheme } from '../hooks/themes';
 
 interface Props {
 	text: string;
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default EmptyView;
+export default memo(EmptyView);

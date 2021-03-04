@@ -1,5 +1,4 @@
-import { DarkTheme, DefaultTheme, Theme } from '@react-navigation/native';
-import Colors from '../../colors';
+import { Theme } from '@react-navigation/native';
 
 export interface AppTheme {
 	theme: CustomTheme;
@@ -14,25 +13,3 @@ export interface CustomTheme extends Theme {
 		subtitleColor: string;
 	};
 }
-
-export const CustomDefaultTheme: CustomTheme = {
-	...DefaultTheme,
-	colors: {
-		...DefaultTheme.colors,
-		primary: Colors.bayOfMany,
-		secondaryText: 'gray',
-		cardBackground: Colors.zircon,
-		subtitleColor: Colors.cinnabar
-	}
-};
-
-export const CustomDarkTheme: CustomTheme = {
-	...DarkTheme,
-	colors: {
-		...DarkTheme.colors,
-		primary: Colors.cinnabar,
-		secondaryText: 'white',
-		cardBackground: Colors.shark,
-		subtitleColor: 'gray'
-	}
-};

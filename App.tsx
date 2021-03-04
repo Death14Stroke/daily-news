@@ -21,14 +21,14 @@ import SplashScreen from './src/screens/SplashScreen';
 import DiscoverScreen from './src/screens/DiscoverScreen';
 import BookmarksScreen from './src/screens/BookmarksScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
-import Colors from './colors';
+import Colors from './src/resources/colors';
 import HomeScreen from './src/screens/HomeScreen';
 import CategoryNewsScreen from './src/screens/CategoryNewsScreen';
-import { useSystemTheme, useTheme } from './src/models/Themes';
 import DetailsScreen from './src/screens/DetailsScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import WebViewScreen from './src/screens/WebViewScreen';
-import { hi } from 'date-fns/locale';
+import { useSystemTheme, useTheme } from './src/hooks/themes';
+import { horizontalAnimation } from './src/resources/animations';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -147,6 +147,50 @@ const bottomTabs = () => {
 	);
 };
 
+const stackNavigation = () => {
+	return (
+		<Stack.Navigator>
+			<Stack.Screen
+				name='Daily News'
+				options={() => ({
+					headerRight: homeScreenMenu,
+					headerStyle: { elevation: 0 }
+				})}>
+				{bottomTabs}
+			</Stack.Screen>
+			<Stack.Screen
+				name='Details'
+				component={DetailsScreen}
+				options={{
+					headerShown: false,
+					...horizontalAnimation
+				}}
+			/>
+			<Stack.Screen
+				name='Search'
+				component={SearchScreen}
+				options={horizontalAnimation}
+			/>
+			<Stack.Screen
+				name='WebView'
+				component={WebViewScreen}
+				options={{
+					...horizontalAnimation,
+					headerBackImage: ({ tintColor }) => {
+						return (
+							<Ionicons
+								name='chevron-back'
+								size={24}
+								color={tintColor}
+							/>
+						);
+					}
+				}}
+			/>
+		</Stack.Navigator>
+	);
+};
+
 const homeScreenMenu = () => {
 	const { colors } = useTheme();
 	const navigation = useNavigation();
@@ -158,29 +202,6 @@ const homeScreenMenu = () => {
 			<Ionicons name='search' size={24} color={colors.text} />
 		</TouchableOpacity>
 	);
-};
-
-const horizontalAnimation = {
-	cardStyleInterpolator: ({
-		current,
-		layouts
-	}: {
-		current: any;
-		layouts: any;
-	}) => {
-		return {
-			cardStyle: {
-				transform: [
-					{
-						translateX: current.progress.interpolate({
-							inputRange: [0, 1],
-							outputRange: [layouts.screen.width, 0]
-						})
-					}
-				]
-			}
-		};
-	}
 };
 
 const App = () => {
@@ -218,59 +239,7 @@ const App = () => {
 													backgroundColor
 												}
 											/>
-											<Stack.Navigator>
-												<Stack.Screen
-													name='Daily News'
-													options={() => ({
-														headerRight: homeScreenMenu,
-														headerStyle: {
-															elevation: 0
-														}
-													})}>
-													{bottomTabs}
-												</Stack.Screen>
-												<Stack.Screen
-													name='Details'
-													component={DetailsScreen}
-													options={{
-														headerShown: false,
-														...horizontalAnimation,
-														gestureDirection:
-															'horizontal'
-													}}
-												/>
-												<Stack.Screen
-													name='Search'
-													component={SearchScreen}
-													options={{
-														...horizontalAnimation,
-														gestureDirection:
-															'horizontal'
-													}}
-												/>
-												<Stack.Screen
-													name='WebView'
-													component={WebViewScreen}
-													options={{
-														...horizontalAnimation,
-														gestureDirection:
-															'horizontal',
-														headerBackImage: ({
-															tintColor
-														}) => {
-															return (
-																<Ionicons
-																	name='chevron-back'
-																	size={24}
-																	color={
-																		tintColor
-																	}
-																/>
-															);
-														}
-													}}
-												/>
-											</Stack.Navigator>
+											{stackNavigation}
 										</NavigationContainer>
 									</SplashScreen>
 								</BookmarkProvider>

@@ -1,11 +1,7 @@
 import { useTheme as useNavigationTheme } from '@react-navigation/native';
 import { ColorSchemeName } from 'react-native';
-import {
-	AppTheme,
-	CustomDarkTheme,
-	CustomDefaultTheme,
-	CustomTheme
-} from '../models/Themes';
+import { AppTheme, CustomTheme } from '../models/Themes';
+import { CustomDarkTheme, CustomDefaultTheme } from '../resources/themes';
 
 export const useTheme = () => {
 	return useNavigationTheme() as CustomTheme;

@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { Context as BookmarkContext } from '../context/BookmarkContext';
 import CollapsingHeader from '../components/CollapsingHeader';
 import News from '../models/News';
-import { useTheme } from '../models/Themes';
+import { useTheme } from '../hooks/themes';
 
 const STATUS_BAR_HEIGHT = 20;
 const HEADER_HEIGHT = 80;

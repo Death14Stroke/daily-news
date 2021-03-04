@@ -1,10 +1,10 @@
 import React, { FC, useLayoutEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { Bar as ProgressBar } from 'react-native-progress';
+import { Bar as HorizontalProgressBar } from 'react-native-progress';
 import { ParamListBase, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useTheme } from '../models/Themes';
+import { useTheme } from '../hooks/themes';
 
 interface Props {
 	route: RouteProp<ParamListBase, 'WebView'>;
@@ -20,7 +20,7 @@ const WebViewScreen: FC<Props> = ({ route, navigation }) => {
 
 	const renderLoading = () => {
 		return (
-			<ProgressBar
+			<HorizontalProgressBar
 				style={styles.progressStyle}
 				progress={progress}
 				width={200}
@@ -38,17 +38,14 @@ const WebViewScreen: FC<Props> = ({ route, navigation }) => {
 	return (
 		<View style={{ flex: 1, alignItems: 'center' }}>
 			<WebView
-				style={{
-					width: SCREEN_WIDTH
-				}}
+				style={{ width: SCREEN_WIDTH }}
 				source={{ uri: url }}
-				startInLoadingState={true}
-				scalesPageToFit={true}
+				startInLoadingState
+				scalesPageToFit
 				javaScriptEnabled
 				pullToRefreshEnabled
 				renderLoading={renderLoading}
 				onLoadProgress={({ nativeEvent }) => {
-					console.log(nativeEvent.progress);
 					setProgress(nativeEvent.progress);
 				}}
 			/>

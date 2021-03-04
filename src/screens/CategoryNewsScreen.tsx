@@ -1,14 +1,23 @@
 import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
-import { Text, FlatList, StyleSheet, ListRenderItemInfo } from 'react-native';
+import {
+	View,
+	Text,
+	FlatList,
+	StyleSheet,
+	Dimensions,
+	ListRenderItemInfo
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Context as SourceContext } from '../context/SourceContext';
 import PagedList from '../components/PagedList';
-import { fetchHighlights } from '../hooks/NewsApi';
+import { fetchHighlights } from '../hooks/newsApiUtils';
 import SourceCard from '../components/SourceCard';
 import Source from '../models/Source';
 import HighlightsCard from '../components/HighlightsCard';
 import News from '../models/News';
 import EmptyView from '../components/EmptyView';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 interface Props {
 	category: string;
@@ -26,7 +35,11 @@ const CategoryNewsScreen: FC<Props> = ({ category }) => {
 	}, []);
 
 	const renderEmptyView = () => {
-		return <EmptyView text='No sources' />;
+		return (
+			<View style={styles.emptyViewContainerStyle}>
+				<EmptyView text='No sources available' />;
+			</View>
+		);
 	};
 
 	const renderHighlight = ({ item, index }: ListRenderItemInfo<News>) => {
@@ -63,7 +76,7 @@ const CategoryNewsScreen: FC<Props> = ({ category }) => {
 					renderItem={renderHighlight}
 					horizontal
 					loadData={(page: number) => {
-						return fetchHighlights('in', page, category);
+						return fetchHighlights({ page, category });
 					}}
 					firstPage={1}
 				/>
@@ -92,6 +105,10 @@ const styles = StyleSheet.create({
 		fontFamily: 'Roboto_500Medium',
 		fontSize: 18,
 		marginBottom: 15
+	},
+	emptyViewContainerStyle: {
+		width: SCREEN_WIDTH,
+		margin: 20
 	}
 });
 

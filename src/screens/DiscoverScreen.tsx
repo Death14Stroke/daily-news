@@ -13,17 +13,9 @@ import { Context as SourceContext } from '../context/SourceContext';
 import SourceCard from '../components/SourceCard';
 import Source from '../models/Source';
 import EmptyView from '../components/EmptyView';
+import categories from '../resources/categories';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const categories = [
-	'business',
-	'entertainment',
-	'general',
-	'health',
-	'science',
-	'sports',
-	'technology'
-];
 
 interface Props {
 	navigation: BottomTabNavigationProp<ParamListBase, 'Discover'>;

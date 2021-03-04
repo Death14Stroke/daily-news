@@ -8,7 +8,7 @@ import {
 	ViewStyle,
 	StyleSheet
 } from 'react-native';
-import { useTheme } from '../models/Themes';
+import { useTheme } from '../hooks/themes';
 
 type State = {
 	loading: boolean;
@@ -74,14 +74,11 @@ const PagedList = <T extends any>({
 	const { loading, data, page, isListEnd } = state;
 
 	const getData = async () => {
-		console.log('loading page: ', page);
-
 		if (!loading && !isListEnd) {
 			dispatch({ type: 'data_loading' });
 
 			try {
 				let results = await loadData(page);
-
 				if (results.length > 0) {
 					dispatch({ type: 'page_loaded', payload: results });
 				} else {

@@ -2,6 +2,7 @@ import createDataContext, { ReducerAction } from '../hooks/createDataContext';
 import news from '../api/news';
 import Source from '../models/Source';
 import { Dispatch } from 'react';
+import { DEFAULT_COUNTRY, DEFAULT_LANGUAGE } from '../data/constants';
 
 type Callback = () => any;
 interface Action extends ReducerAction {
@@ -19,11 +20,15 @@ const sourceReducer = (state: Source[], action: Action): Source[] => {
 	}
 };
 
-const fetchSources = (dispatch: Dispatch<ReducerAction>) => async (
-	country: string,
-	language: string,
-	callback: Callback
-) => {
+const fetchSources = (dispatch: Dispatch<ReducerAction>) => async ({
+	country = DEFAULT_COUNTRY,
+	language = DEFAULT_LANGUAGE,
+	callback
+}: {
+	country?: string;
+	language?: string;
+	callback?: Callback;
+}) => {
 	try {
 		let { data } = await news.get('/sources', {
 			params: {
@@ -31,8 +36,12 @@ const fetchSources = (dispatch: Dispatch<ReducerAction>) => async (
 				language
 			}
 		});
+
 		dispatch({ type: 'fetch_sources', payload: data.sources });
-		callback();
+
+		if (callback) {
+			callback();
+		}
 	} catch (err) {
 		console.log(err);
 	}

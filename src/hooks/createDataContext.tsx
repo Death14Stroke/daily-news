@@ -1,12 +1,12 @@
-import React, { createContext, Dispatch, FC, useReducer } from 'react';
+import React, { createContext, FC, useReducer } from 'react';
+import { DispatchAction } from '../models/Reducer';
 
-type DispatchAction = (dispatch: Dispatch<ReducerAction>) => any;
 type Action = () => any;
 type ReducerAction = { type: any; payload: any };
 
 export default <S extends any>(
 	reducer: (state: S, action: ReducerAction) => S,
-	actions: { [key: string]: DispatchAction },
+	actions: { [key: string]: DispatchAction<ReducerAction> },
 	initialState: S
 ) => {
 	const Context = createContext<any>(null);

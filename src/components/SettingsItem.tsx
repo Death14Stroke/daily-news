@@ -1,8 +1,8 @@
 import React, { FC, ReactNode, useContext, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Switch } from 'react-native-switch';
-import { useTheme } from '../models/Themes';
 import { Context as PreferenceContext } from '../context/PreferenceContext';
+import { useTheme } from '../hooks/themes';
 
 type Props = {
 	label: string;

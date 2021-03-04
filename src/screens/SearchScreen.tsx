@@ -9,11 +9,11 @@ import { SearchBar } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ParamListBase } from '@react-navigation/native';
-import { searchArticles } from '../hooks/NewsApi';
+import { searchArticles } from '../hooks/newsApiUtils';
 import NewsCard from '../components/NewsCard';
 import PagedList from '../components/PagedList';
 import News from '../models/News';
-import { useTheme } from '../models/Themes';
+import { useTheme } from '../hooks/themes';
 
 type Props = {
 	navigation: StackNavigationProp<ParamListBase, 'Search'>;
@@ -30,21 +30,19 @@ const SearchScreen: FC<Props> = ({ navigation }) => {
 			return [];
 		}
 
-		const results = await searchArticles(query, 'en', page);
+		const results = await searchArticles({ query, page });
 
 		return results;
 	};
 
 	const header = () => {
 		return (
-			<View
-				style={{
-					flexDirection: 'row',
-					backgroundColor: colors.card,
-					marginTop: 30
-				}}>
+			<View style={styles.headerContainerStyle}>
 				<TouchableOpacity
-					style={styles.upArrowStyle}
+					style={[
+						styles.upArrowStyle,
+						{ backgroundColor: colors.card }
+					]}
 					onPress={() => navigation.pop()}>
 					<Ionicons
 						name='chevron-back'
@@ -102,6 +100,10 @@ const SearchScreen: FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+	headerContainerStyle: {
+		flexDirection: 'row',
+		marginTop: 30
+	},
 	upArrowStyle: {
 		alignSelf: 'center',
 		marginStart: 10

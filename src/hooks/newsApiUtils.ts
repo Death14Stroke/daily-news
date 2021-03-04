@@ -1,14 +1,19 @@
 import { useState } from 'react';
 import news from '../api/news';
+import { DEFAULT_COUNTRY, DEFAULT_LANGUAGE } from '../data/constants';
 import News from '../models/News';
 
 const PAGE_SIZE = 10;
 
-export const fetchHighlights = async (
-	country: string,
-	page: number,
-	category?: string
-): Promise<News[]> => {
+export const fetchHighlights = async ({
+	country = DEFAULT_COUNTRY,
+	page,
+	category
+}: {
+	country?: string;
+	page: number;
+	category?: string;
+}): Promise<News[]> => {
 	try {
 		let { data } = await news.get('/highlights', {
 			params: {
@@ -25,11 +30,15 @@ export const fetchHighlights = async (
 	}
 };
 
-export const searchArticles = async (
-	query: string,
-	language: string,
-	page: number
-): Promise<News[]> => {
+export const searchArticles = async ({
+	query,
+	language = DEFAULT_LANGUAGE,
+	page
+}: {
+	query: string;
+	language?: string;
+	page: number;
+}): Promise<News[]> => {
 	try {
 		let { data } = await news.get('/search', {
 			params: {
@@ -46,32 +55,9 @@ export const searchArticles = async (
 	}
 };
 
-export const useSources = (
-	country: string,
-	category: string,
-	language: string
-) => {
-	const [sources, setSources] = useState([]);
-
-	const fetchSources = async () => {
-		try {
-			let { data } = await news.get('/sources', {
-				params: {
-					country,
-					category,
-					language
-				}
-			});
-			setSources(data.sources);
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
-	return [sources, fetchSources];
-};
-
-export const useRecents = (country: string): [News[], () => Promise<void>] => {
+export const useRecents = (
+	country: string = DEFAULT_COUNTRY
+): [News[], () => Promise<void>] => {
 	const [recents, setRecents] = useState([]);
 
 	const fetchRecents = async () => {

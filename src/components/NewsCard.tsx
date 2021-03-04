@@ -1,7 +1,7 @@
 import React, { FC, memo } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-elements';
-import { useTheme } from '../models/Themes';
+import { useTheme } from '../hooks/themes';
 import News from '../models/News';
 
 interface Props {

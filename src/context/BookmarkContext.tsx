@@ -8,12 +8,12 @@ import React, {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import _ from 'lodash';
 import News from '../models/News';
+import { DispatchAction } from '../models/Reducer';
 
 type Action = {
 	type: 'init_bookmarks' | 'add_bookmark' | 'delete_bookmark';
 	payload: any;
 };
-type DispatchAction = (dispatch: Dispatch<Action>) => any;
 
 const INITIAL_STATE: News[] = [];
 
@@ -53,7 +53,7 @@ const createBookmarkContext = () => {
 				: false;
 		};
 
-		const actions: { [key: string]: DispatchAction } = {
+		const actions: { [key: string]: DispatchAction<Action> } = {
 			addBookmark,
 			deleteBookmark
 		};

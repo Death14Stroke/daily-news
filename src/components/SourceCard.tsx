@@ -7,8 +7,8 @@ import {
 	ViewStyle
 } from 'react-native';
 import { Avatar, Card } from 'react-native-elements';
+import { useTheme } from '../hooks/themes';
 import Source from '../models/Source';
-import { useTheme } from '../models/Themes';
 
 interface Props {
 	source: Source;
@@ -19,7 +19,7 @@ interface Props {
 }
 
 const SourceCard: FC<Props> = ({
-	source: { name, description, url },
+	source: { name, description },
 	style,
 	imageContainerStyle,
 	textContainerStyle,

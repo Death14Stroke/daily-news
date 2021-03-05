@@ -29,6 +29,8 @@ const fetchSources = (dispatch: Dispatch<ReducerAction>) => async ({
 	language?: string;
 	callback?: Callback;
 }) => {
+	console.log('fetch sources:', country, language, callback);
+
 	try {
 		let { data } = await news.get('/sources', {
 			params: {
@@ -36,6 +38,8 @@ const fetchSources = (dispatch: Dispatch<ReducerAction>) => async ({
 				language
 			}
 		});
+
+		console.log(data);
 
 		dispatch({ type: 'fetch_sources', payload: data.sources });
 

@@ -27,6 +27,7 @@ const NewsCard: FC<Props> = ({
 						<Image
 							source={{ uri: urlToImage }}
 							style={styles.image}
+							defaultSource={require('../../assets/default-news.jpg')}
 						/>
 					</View>
 					<View style={styles.textContainer}>

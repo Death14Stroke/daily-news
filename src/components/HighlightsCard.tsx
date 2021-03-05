@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
 		resizeMode: 'cover',
 		borderRadius: 5,
 		overflow: 'hidden',
-		elevation: 2,
 		marginRight: 20
 	},
 	textContainer: {

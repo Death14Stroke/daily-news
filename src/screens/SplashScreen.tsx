@@ -7,8 +7,10 @@ const SplashScreen: FC = ({ children }) => {
 	const { fetchSources } = useContext(SourceContext);
 
 	useEffect(() => {
-		fetchSources(() => {
-			setIsLoading(false);
+		fetchSources({
+			callback: () => {
+				setIsLoading(false);
+			}
 		});
 	}, []);
 

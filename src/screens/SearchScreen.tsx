@@ -37,12 +37,13 @@ const SearchScreen: FC<Props> = ({ navigation }) => {
 
 	const header = () => {
 		return (
-			<View style={styles.headerContainerStyle}>
+			<View
+				style={[
+					styles.headerContainerStyle,
+					{ backgroundColor: colors.card }
+				]}>
 				<TouchableOpacity
-					style={[
-						styles.upArrowStyle,
-						{ backgroundColor: colors.card }
-					]}
+					style={styles.upArrowStyle}
 					onPress={() => navigation.pop()}>
 					<Ionicons
 						name='chevron-back'

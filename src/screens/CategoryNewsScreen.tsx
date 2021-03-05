@@ -37,7 +37,7 @@ const CategoryNewsScreen: FC<Props> = ({ category }) => {
 	const renderEmptyView = () => {
 		return (
 			<View style={styles.emptyViewContainerStyle}>
-				<EmptyView text='No sources available' />;
+				<EmptyView text='No sources available' />
 			</View>
 		);
 	};

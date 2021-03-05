@@ -239,7 +239,7 @@ const App = () => {
 													backgroundColor
 												}
 											/>
-											{stackNavigation}
+											{stackNavigation()}
 										</NavigationContainer>
 									</SplashScreen>
 								</BookmarkProvider>

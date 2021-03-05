@@ -53,13 +53,7 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
 					}}
 					firstPage={1}
 				/>
-				<Text
-					style={[
-						styles.titleStyle,
-						{ color: colors.secondaryText }
-					]}>
-					Recent News
-				</Text>
+				<Text style={[styles.titleStyle]}>Recent News</Text>
 			</>
 		);
 	}, []);
@@ -72,7 +66,7 @@ const HomeScreen: FC<Props> = ({ navigation }) => {
 		<FlatList
 			style={{ paddingTop: 10 }}
 			data={recents}
-			keyExtractor={news => news.url}
+			keyExtractor={news => `${news.url}-${news.category || 'All'}`}
 			renderItem={renderRecent}
 			ListHeaderComponent={renderHighlightsList}
 		/>
@@ -85,7 +79,8 @@ const styles = StyleSheet.create({
 		marginTop: 15,
 		marginBottom: 15,
 		fontFamily: 'Roboto_500Medium',
-		fontSize: 18
+		fontSize: 18,
+		color: 'gray'
 	}
 });
 
